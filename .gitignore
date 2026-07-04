@@ -1,0 +1,13 @@
+# Visual Studio & .NET Gitignore
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.userosscache
+*.sln.docstates
+release/
+publish_output/
+scratch/
+test_settings_*.json
+*.log

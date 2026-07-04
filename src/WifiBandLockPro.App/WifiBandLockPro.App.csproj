@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <!-- Packaging & Branding for Standalone Release -->
+    <AssemblyName>HyperBand5G</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Product>HyperBand 5G Suite</Product>
+    <Description>Autonomous Wi-Fi 5GHz Band Steering &amp; Speed Test Suite for Windows</Description>
+    <Company>HyperBand 5G Team</Company>
+    <Copyright>Copyright © 2026 HyperBand 5G Team. All rights reserved.</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WifiBandLockPro.Core\WifiBandLockPro.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+</Project>
