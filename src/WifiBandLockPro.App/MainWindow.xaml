@@ -375,7 +375,7 @@
             </Grid>
         </Border>
 
-        <!-- BOTTOM ACTIVITY LOG -->
+        <!-- BOTTOM ACTIVITY LOG WITH CLEAR BUTTON -->
         <Border Grid.Row="4" Background="#0E121A" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,15,0,0">
             <Grid>
                 <Grid.RowDefinitions>
@@ -383,10 +383,17 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                    <TextBlock Text="{Binding Loc.ActivityLogTitle}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-                    <TextBlock Text="{Binding Loc.ActivityLogDesc}" FontSize="12" Foreground="{DynamicResource KillerMutedBrush}" VerticalAlignment="Center"/>
-                </StackPanel>
+                <Grid Grid.Row="0" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <TextBlock Text="{Binding Loc.ActivityLogTitle}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="{Binding Loc.ActivityLogDesc}" FontSize="12" Foreground="{DynamicResource KillerMutedBrush}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="{Binding Loc.BtnClearLogs}" Command="{Binding ClearLogsCommand}" Style="{StaticResource KillerSmallButtonStyle}" Padding="12,5" FontSize="12" FontWeight="Bold"/>
+                </Grid>
 
                 <ListBox Grid.Row="1" ItemsSource="{Binding ActivityLogs}" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>

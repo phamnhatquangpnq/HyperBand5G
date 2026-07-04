@@ -51,6 +51,7 @@ public class LocalizationService : INotifyPropertyChanged
     
     public string ActivityLogTitle => IsVietnamese ? "Lịch Sử Tự Động Chuyển Băng Tần & Nhật Ký Hệ Thống" : "Auto-Switch Activity Log & Band Steering Audit";
     public string ActivityLogDesc => IsVietnamese ? "- Chi tiết các sự kiện chuyển băng tần tự động theo thời gian thực" : "- Real-time events when Windows switches bands";
+    public string BtnClearLogs => IsVietnamese ? "🗑️ Xóa Lịch Sử" : "🗑️ Clear Logs";
 
     public string SpeedTestDesc => IsVietnamese ? "- Kiểm tra tốc độ thực tế Ping, Jitter, Download & Upload qua CDN Cloudflare" : "- Real-time Ping, Jitter, Download & Upload test via Cloudflare CDN";
     public string BtnStartSpeedTest => IsVietnamese ? "BẮT ĐẦU ĐO TỐC ĐỘ" : "START SPEED TEST";

@@ -41,6 +41,7 @@ public class MainViewModel : ViewModelBase
     public ICommand SwitchLanguageCommand { get; }
     public ICommand SaveSettingsCommand { get; }
     public ICommand StartSpeedTestCommand { get; }
+    public ICommand ClearLogsCommand { get; }
 
     public bool IsSmartSelectionEnabled
     {
@@ -130,6 +131,7 @@ public class MainViewModel : ViewModelBase
         ToggleSmartSelectionCommand = new RelayCommand(_ => IsSmartSelectionEnabled = !IsSmartSelectionEnabled);
         RefreshCommand = new RelayCommand(async _ => await RefreshAsync());
         ForceSwitch5GhzCommand = new RelayCommand(async _ => await ForceSwitchTo5GhzAsync());
+        ClearLogsCommand = new RelayCommand(_ => ActivityLogs.Clear());
         
         SwitchTabCommand = new RelayCommand(param =>
         {
