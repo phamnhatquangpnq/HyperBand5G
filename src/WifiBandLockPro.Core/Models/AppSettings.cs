@@ -11,5 +11,7 @@ public record AppSettings(
     int PollIntervalSeconds = 3,
     int Min5GhzQualityThreshold = 35,
     bool Prefer5GhzAdapterProperty = true,
-    bool MinimizeToTrayOnClose = true
+    bool MinimizeToTrayOnClose = true,
+    bool AutoCleanRamEnabled = true,
+    int AutoCleanRamIntervalSeconds = 60
 );

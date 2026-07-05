@@ -38,6 +38,11 @@ public class LocalizationAndSettingsTests : IDisposable
         Assert.Equal("2.4 GHz", net24.BandDisplay);
         Assert.Equal("5 GHz", net50.BandDisplay);
         Assert.Equal("6 GHz", net60.BandDisplay);
+
+        // Test SignalDisplay and ScoreDisplay properties for DataGrid binding
+        Assert.Equal("80% (-60 dBm)", net24.SignalDisplay);
+        Assert.Equal("70 pts", net24.ScoreDisplay);
+        Assert.Equal("802.11n / 6", net24.PhyKindDisplay);
     }
 
     [Fact]
@@ -45,11 +50,36 @@ public class LocalizationAndSettingsTests : IDisposable
     {
         var loc = new LocalizationService("vn");
         Assert.True(loc.IsVietnamese);
-        Assert.Equal("HYPERBAND 5G SUITE", loc.AppSubtitle);
+        Assert.Contains("HYPERBOOST 5G", loc.AppTitle, StringComparison.OrdinalIgnoreCase);
 
         loc.SetLanguage("en");
         Assert.False(loc.IsVietnamese);
-        Assert.Equal("HYPERBAND 5G SUITE", loc.AppSubtitle);
+        Assert.Contains("HYPERBOOST 5G", loc.AppTitle, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void LocalizationService_ShouldContainAllUIBoundProperties()
+    {
+        var loc = new LocalizationService("vn");
+        Assert.NotEmpty(loc.OptimizerTabTitle);
+        Assert.NotEmpty(loc.SettingsTabTitle);
+        Assert.NotEmpty(loc.SmartSelectionTitle);
+        Assert.NotEmpty(loc.ActiveMonitoring);
+        Assert.NotEmpty(loc.SmartSelectionDesc);
+        Assert.NotEmpty(loc.AuthorizedNetworksTitle);
+        Assert.NotEmpty(loc.AuthorizedNetworksDesc);
+        Assert.NotEmpty(loc.SpeedTestDesc);
+        Assert.NotEmpty(loc.RamBoosterTitle);
+        Assert.NotEmpty(loc.RamBoosterDesc);
+        Assert.NotEmpty(loc.BtnOptimizeRam);
+        Assert.NotEmpty(loc.ColProcId);
+        Assert.NotEmpty(loc.ColProcRam);
+        Assert.NotEmpty(loc.JunkCleanerTitle);
+        Assert.NotEmpty(loc.JunkCleanerDesc);
+        Assert.NotEmpty(loc.AutoCleanRamLabel);
+        Assert.NotEmpty(loc.ActivityLogTitle);
+        Assert.NotEmpty(loc.ActivityLogDesc);
+        Assert.NotEmpty(loc.BtnClearLogs);
     }
 
     [Fact]

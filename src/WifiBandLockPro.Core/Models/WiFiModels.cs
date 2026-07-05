@@ -43,6 +43,9 @@ public record BSSIDNetwork(
 )
 {
     public string BandDisplay => Band == WiFiBand.Band24GHz ? "2.4 GHz" : Band == WiFiBand.Band5GHz ? "5 GHz" : Band == WiFiBand.Band6GHz ? "6 GHz" : "Unknown";
+    public string SignalDisplay => $"{SignalQuality}% ({RssiDbm} dBm)";
+    public string ScoreDisplay => $"{Score} pts";
+    public string PhyKindDisplay => $"{RadioType} / {Channel}";
 }
 
 public record WiFiInterfaceStatus(
@@ -64,6 +67,9 @@ public record WiFiInterfaceStatus(
 )
 {
     public string BandDisplay => Band == WiFiBand.Band24GHz ? "2.4 GHz" : Band == WiFiBand.Band5GHz ? "5 GHz" : Band == WiFiBand.Band6GHz ? "6 GHz" : "Unknown";
+    public string SignalDisplay => $"{SignalQuality}% ({RssiDbm} dBm)";
+    public string ScoreDisplay => $"{0} pts";
+    public string PhyKindDisplay => $"{RadioType} / {Channel}";
 }
 
 public record SwitchEventLog(
@@ -75,5 +81,39 @@ public record SwitchEventLog(
     string ToBssid,
     WiFiBand ToBand,
     string Reason,
-    bool Success
-);
+    bool Success,
+    string Category = "WIFI"
+)
+{
+    public string CategoryBadge => Category switch
+    {
+        "RAM" => "🚀 RAM Boost",
+        "JUNK" => "🧹 Junk Clean",
+        "COMPRESS" => "⚡ Compress",
+        _ => "📡 Wi-Fi"
+    };
+
+    public string BadgeBgColor => Category switch
+    {
+        "RAM" => "#163326",      // Soft dark mint
+        "JUNK" => "#332D1A",     // Soft dark amber
+        "COMPRESS" => "#2E1E3B", // Soft dark purple
+        _ => "#1A2E40"           // Soft dark blue (WiFi)
+    };
+
+    public string BadgeTextColor => Category switch
+    {
+        "RAM" => "#6EE7B7",      // Pastel Mint
+        "JUNK" => "#FDE047",     // Pastel Yellow
+        "COMPRESS" => "#C084FC", // Pastel Purple
+        _ => "#38BDF8"           // Pastel Sky Blue (WiFi)
+    };
+
+    public string MessageTextColor => Category switch
+    {
+        "RAM" => "#E6FFFA",      // Light soft teal/green
+        "JUNK" => "#FEFCE8",     // Light soft yellow
+        "COMPRESS" => "#FAF5FF", // Light soft lavender
+        _ => "#E0F2FE"           // Light soft blue
+    };
+}

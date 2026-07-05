@@ -4,38 +4,60 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:WifiBandLockPro.Core.Models;assembly=WifiBandLockPro.Core"
+        xmlns:converters="clr-namespace:WifiBandLockPro.App.Converters"
         mc:Ignorable="d"
-        Title="HyperBand 5G - Smart Wi-Fi Steering Pro" 
-        Height="780" Width="1150"
-        MinHeight="650" MinWidth="900"
+        Title="HyperBoost 5G &amp; PC Suite - Smart Wi-Fi &amp; System Optimizer Pro" 
+        Height="760" Width="1180"
+        MinHeight="500" MinWidth="700"
         Background="{DynamicResource KillerDarkBrush}"
         Foreground="{DynamicResource KillerTextBrush}"
         WindowStartupLocation="CenterScreen">
     
+    <Window.Resources>
+        <converters:ExePathToIconConverter x:Key="ExePathToIconConverter"/>
+        <converters:BindingProxy x:Key="LocProxy" Data="{Binding Loc}"/>
+        
+        <Style x:Key="CenteredText" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="BoldText" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource KillerAccentBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Header & Language Switcher -->
             <RowDefinition Height="Auto"/> <!-- Navigation Tabs -->
             <RowDefinition Height="Auto"/> <!-- Smart AP Selection Card -->
-            <RowDefinition Height="*"/>    <!-- Tab Content (Dashboard / Speed Test / Settings) -->
+            <RowDefinition Height="*"/>    <!-- Tab Content (Dashboard / Speed Test / Optimizer / Settings) -->
             <RowDefinition Height="160"/>  <!-- Activity Log Bottom Bar -->
         </Grid.RowDefinitions>
 
         <!-- TOP HEADER & LANGUAGE FLAG SWITCHER -->
         <Grid Grid.Row="0" Margin="0,0,0,15">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="HYPER" FontSize="28" FontWeight="ExtraBold" Foreground="{DynamicResource KillerAccentBrush}"/>
-                <TextBlock Text="BAND 5G" FontSize="28" FontWeight="Light" Foreground="White"/>
-                <Border Background="#1A2333" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="4" Margin="15,0,0,0" Padding="8,4" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Loc.AppSubtitle}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource KillerAccentBrush}"/>
+            <Grid Grid.Column="0" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="HYPER" FontSize="28" FontWeight="ExtraBold" Foreground="{DynamicResource KillerAccentBrush}"/>
+                    <TextBlock Text="BOOST" FontSize="28" FontWeight="Light" Foreground="White"/>
+                </StackPanel>
+                <Border Grid.Column="1" Background="#1A2333" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="4" Margin="15,0,0,0" Padding="8,4" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding Loc.AppSubtitle}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource KillerAccentBrush}" TextTrimming="CharacterEllipsis"/>
                 </Border>
-            </StackPanel>
+            </Grid>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                 <!-- Language Flag Switcher -->
@@ -58,7 +80,7 @@
                 <Border Background="#121722" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="20" Padding="12,6" Margin="0,0,15,0">
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="10" Height="10" Fill="{Binding CurrentBandBadgeColor}" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding CurrentStatus.Ssid, FallbackValue='Disconnected'}" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding CurrentStatus.Ssid, FallbackValue='Disconnected'}" FontWeight="SemiBold" Margin="0,0,8,0" MaxWidth="140" TextTrimming="CharacterEllipsis"/>
                         <TextBlock Text="{Binding CurrentBandBadgeText}" Foreground="{Binding CurrentBandBadgeColor}" FontWeight="Bold"/>
                     </StackPanel>
                 </Border>
@@ -72,7 +94,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
             <Button Content="{Binding Loc.DashboardTabTitle}" Command="{Binding SwitchTabCommand}" CommandParameter="0" 
                     Style="{StaticResource KillerButtonStyle}" Margin="0,0,10,0" Padding="18,8" FontSize="14" FontWeight="Bold"/>
-            <Button Content="{Binding Loc.SpeedTestTabTitle}" Command="{Binding SwitchTabCommand}" CommandParameter="1" 
+            <Button Content="{Binding Loc.OptimizerTabTitle}" Command="{Binding SwitchTabCommand}" CommandParameter="1" 
                     Style="{StaticResource KillerButtonStyle}" Margin="0,0,10,0" Padding="18,8" FontSize="14" FontWeight="Bold"/>
             <Button Content="{Binding Loc.SettingsTabTitle}" Command="{Binding SwitchTabCommand}" CommandParameter="2" 
                     Style="{StaticResource KillerSmallButtonStyle}" Padding="18,8" FontSize="14" FontWeight="SemiBold"/>
@@ -86,14 +108,14 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Loc.SmartSelectionTitle}" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="{Binding Loc.SmartSelectionTitle}" FontSize="18" FontWeight="SemiBold" Foreground="White" TextWrapping="Wrap"/>
                         <Border Background="Transparent" BorderBrush="{DynamicResource KillerGreenBrush}" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="12,0,0,0">
                             <TextBlock Text="{Binding Loc.ActiveMonitoring}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}"/>
                         </Border>
                     </StackPanel>
-                    <TextBlock Text="{Binding Loc.SmartSelectionDesc}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding Loc.SmartSelectionDesc}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <!-- Toggle Button -->
@@ -106,274 +128,474 @@
             </Grid>
         </Border>
 
-        <!-- TAB 0: MAIN DASHBOARD (TABLES) -->
-        <Grid Grid.Row="3" Visibility="{Binding CurrentTabIndex, Converter={StaticResource TabIndexToVisConverter}, ConverterParameter=0}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/> <!-- Authorized Networks -->
-                <RowDefinition Height="12"/> <!-- Spacing -->
-                <RowDefinition Height="*"/> <!-- Available Networks -->
-            </Grid.RowDefinitions>
-
-            <!-- Authorized Networks (Current SSID BSSIDs) -->
-            <Border Grid.Row="0" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="{Binding Loc.AuthorizedNetworksTitle}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource KillerAccentBrush}"/>
-                        <TextBlock Text="{Binding Loc.AuthorizedNetworksDesc}" FontSize="12" Foreground="{DynamicResource KillerMutedBrush}" VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <DataGrid Grid.Row="1" ItemsSource="{Binding AuthorizedNetworks}" Style="{StaticResource KillerDataGridStyle}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsCurrentConnection}" Value="True">
-                                        <Setter Property="Background" Value="#152433"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource KillerGreenBrush}"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-                        <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="{Binding DataContext.Loc.ColName, RelativeSource={RelativeSource AncestorType=Window}}" Width="240">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Ssid}" FontSize="14"/>
-                                            <Border Background="#1A332C" BorderBrush="{DynamicResource KillerGreenBrush}" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="10,0,0,0" Visibility="{Binding IsCurrentConnection, Converter={StaticResource BoolToVisConverter}}">
-                                                <TextBlock Text="{Binding DataContext.Loc.BadgeActive, RelativeSource={RelativeSource AncestorType=Window}}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}"/>
-                                            </Border>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColBssid, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding Bssid}" Width="160" FontFamily="Consolas"/>
-                            <DataGridTemplateColumn Header="{Binding DataContext.Loc.ColScore, RelativeSource={RelativeSource AncestorType=Window}}" Width="180">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid VerticalAlignment="Center">
-                                            <ProgressBar Value="{Binding Score}" Maximum="100" Height="14" Style="{StaticResource KillerProgressBarStyle}"/>
-                                            <TextBlock Text="{Binding Score}" HorizontalAlignment="Right" Margin="0,0,8,0" FontSize="11" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColSignal, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding SignalQuality, StringFormat={}{0}%}" Width="110"/>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColBand, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding BandDisplay}" Width="110" FontWeight="Bold"/>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColClass, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding RadioType}" Width="*"/>
-                            <DataGridTemplateColumn Header="{Binding DataContext.Loc.ColAction, RelativeSource={RelativeSource AncestorType=Window}}" Width="120">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="{Binding DataContext.Loc.BtnForceConnect, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                                Command="{Binding DataContext.ForceSwitch5GhzCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                Style="{StaticResource KillerSmallButtonStyle}" 
-                                                Visibility="{Binding IsCurrentConnection, Converter={StaticResource InverseBoolToVisConverter}}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </Border>
-
-            <!-- Available Networks -->
-            <Border Grid.Row="2" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    
-                    <TextBlock Grid.Row="0" Text="{Binding Loc.AvailableNetworksTitle}" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource KillerAccentBrush}" Margin="0,0,0,10"/>
-
-                    <DataGrid Grid.Row="1" ItemsSource="{Binding AvailableNetworks}" Style="{StaticResource KillerDataGridStyle}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColName, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding Ssid}" Width="240" FontWeight="SemiBold"/>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColBssid, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding Bssid}" Width="160" FontFamily="Consolas"/>
-                            <DataGridTemplateColumn Header="{Binding DataContext.Loc.ColScore, RelativeSource={RelativeSource AncestorType=Window}}" Width="180">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid VerticalAlignment="Center">
-                                            <ProgressBar Value="{Binding Score}" Maximum="100" Height="14" Style="{StaticResource KillerProgressBarStyle}"/>
-                                            <TextBlock Text="{Binding Score}" HorizontalAlignment="Right" Margin="0,0,8,0" FontSize="11" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColSignal, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding SignalQuality, StringFormat={}{0}%}" Width="110"/>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColBand, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding BandDisplay}" Width="110" FontWeight="Bold"/>
-                            <DataGridTextColumn Header="{Binding DataContext.Loc.ColClass, RelativeSource={RelativeSource AncestorType=Window}}" Binding="{Binding RadioType}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
-            </Border>
-        </Grid>
-
-        <!-- TAB 1: WI-FI SPEED TEST PANEL -->
-        <Border Grid.Row="3" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="30" Visibility="{Binding CurrentTabIndex, Converter={StaticResource TabIndexToVisConverter}, ConverterParameter=1}">
+        <!-- TAB 0: MAIN DASHBOARD (WI-FI TABLES & SPEED TEST SIDE-BY-SIDE) -->
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="{Binding CurrentTabIndex, Converter={StaticResource TabIndexToVisConverter}, ConverterParameter=0}">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="9*"/> <!-- Left: Wi-Fi Tables -->
+                    <ColumnDefinition Width="15"/> <!-- Spacing -->
+                    <ColumnDefinition Width="5*"/> <!-- Right: Speed Test -->
+                </Grid.ColumnDefinitions>
 
-                <!-- Title -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,25">
-                    <TextBlock Text="🚀 " FontSize="24"/>
-                    <TextBlock Text="{Binding Loc.SpeedTestTabTitle}" FontSize="22" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="{Binding Loc.SpeedTestDesc}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                </StackPanel>
+                <!-- LEFT COLUMN: WI-FI TABLES -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/> <!-- Authorized Networks -->
+                        <RowDefinition Height="12"/> <!-- Spacing -->
+                        <RowDefinition Height="*"/> <!-- Available Networks -->
+                    </Grid.RowDefinitions>
 
-                <!-- Speed Meters -->
-                <Grid Grid.Row="1" Margin="0,10,0,30">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <!-- Authorized Networks (Current SSID BSSIDs) -->
+                    <Border Grid.Row="0" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="{Binding Loc.AuthorizedNetworksTitle}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource KillerAccentBrush}"/>
+                                <TextBlock Text="{Binding Loc.AuthorizedNetworksDesc}" FontSize="11" Foreground="{DynamicResource KillerMutedBrush}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </StackPanel>
 
-                    <!-- Ping -->
-                    <Border Grid.Column="0" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Loc.PingLabel}" FontSize="14" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding SpeedTestStatus.PingMs, StringFormat='{}{0} ms'}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-                        </StackPanel>
+                            <DataGrid Grid.Row="1" ItemsSource="{Binding AuthorizedNetworks}" Style="{StaticResource KillerDataGridStyle}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MaxHeight="220">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsCurrentConnection}" Value="True">
+                                                <Setter Property="Background" Value="#152433"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource KillerGreenBrush}"/>
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="{Binding Data.ColName, Source={StaticResource LocProxy}}" Width="4*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Ssid}" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                                    <Border Background="#1A332C" BorderBrush="{DynamicResource KillerGreenBrush}" BorderThickness="1" CornerRadius="4" Padding="4,1" Margin="8,0,0,0" Visibility="{Binding IsCurrentConnection, Converter={StaticResource BoolToVisConverter}}">
+                                                        <TextBlock Text="{Binding DataContext.Loc.BadgeActive, RelativeSource={RelativeSource AncestorType=Window}}" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}"/>
+                                                    </Border>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="{Binding Data.ColBssid, Source={StaticResource LocProxy}}" Binding="{Binding Bssid}" Width="3*"/>
+                                    <DataGridTextColumn Header="{Binding Data.ColBand, Source={StaticResource LocProxy}}" Binding="{Binding BandDisplay}" Width="1*"/>
+                                    <DataGridTemplateColumn Header="{Binding Data.ColSignal, Source={StaticResource LocProxy}}" Width="3*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Grid Width="60" Height="12" Margin="0,0,6,0" VerticalAlignment="Center">
+                                                        <ProgressBar Value="{Binding SignalQuality}" Maximum="100" Style="{StaticResource SegmentedSignalBarStyle}"/>
+                                                    </Grid>
+                                                    <TextBlock Text="{Binding SignalDisplay}" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="{Binding Data.ColScore, Source={StaticResource LocProxy}}" Binding="{Binding ScoreDisplay}" Width="1*"/>
+                                    <DataGridTextColumn Header="{Binding Data.ColClass, Source={StaticResource LocProxy}}" Binding="{Binding PhyKindDisplay}" Width="2*"/>
+                                    <DataGridTemplateColumn Header="{Binding Data.ColAction, Source={StaticResource LocProxy}}" Width="3*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="{Binding DataContext.Loc.BtnForceConnect, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                        Command="{Binding DataContext.ConnectToBssidCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource KillerSmallButtonStyle}" 
+                                                        Visibility="{Binding IsCurrentConnection, Converter={StaticResource InverseBoolToVisConverter}}"
+                                                        HorizontalAlignment="Left" Padding="10,4"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
                     </Border>
 
-                    <!-- Jitter -->
-                    <Border Grid.Column="2" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Loc.JitterLabel}" FontSize="14" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding SpeedTestStatus.JitterMs, StringFormat='{}{0} ms'}" FontSize="28" FontWeight="Bold" Foreground="#FF9900" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
+                    <!-- Available Networks (Other Nearby Wi-Fi) -->
+                    <Border Grid.Row="2" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Text="{Binding Loc.AvailableNetworksTitle}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource KillerAccentBrush}" Margin="0,0,0,10"/>
 
-                    <!-- Download -->
-                    <Border Grid.Column="4" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Loc.DownloadLabel}" FontSize="14" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding SpeedTestStatus.DownloadMbps, StringFormat='{}{0:F1} Mbps'}" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Upload -->
-                    <Border Grid.Column="6" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Loc.UploadLabel}" FontSize="14" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding SpeedTestStatus.UploadMbps, StringFormat='{}{0:F1} Mbps'}" FontSize="28" FontWeight="Bold" Foreground="#A855F7" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-                        </StackPanel>
+                            <DataGrid Grid.Row="1" ItemsSource="{Binding AvailableNetworks}" Style="{StaticResource KillerDataGridStyle}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MaxHeight="220">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="{Binding Data.ColName, Source={StaticResource LocProxy}}" Width="4*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Ssid}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                                    <Border Background="#1A332C" BorderBrush="{DynamicResource KillerGreenBrush}" BorderThickness="1" CornerRadius="4" Padding="4,1" Margin="8,0,0,0" Visibility="{Binding IsCurrentConnection, Converter={StaticResource BoolToVisConverter}}">
+                                                        <TextBlock Text="{Binding DataContext.Loc.BadgeActive, RelativeSource={RelativeSource AncestorType=Window}}" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}"/>
+                                                    </Border>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="{Binding Data.ColBssid, Source={StaticResource LocProxy}}" Binding="{Binding Bssid}" Width="3*"/>
+                                    <DataGridTextColumn Header="{Binding Data.ColBand, Source={StaticResource LocProxy}}" Binding="{Binding BandDisplay}" Width="1*"/>
+                                    <DataGridTemplateColumn Header="{Binding Data.ColSignal, Source={StaticResource LocProxy}}" Width="3*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Grid Width="60" Height="12" Margin="0,0,6,0" VerticalAlignment="Center">
+                                                        <ProgressBar Value="{Binding SignalQuality}" Maximum="100" Style="{StaticResource SegmentedSignalBarStyle}"/>
+                                                    </Grid>
+                                                    <TextBlock Text="{Binding SignalDisplay}" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="{Binding Data.ColScore, Source={StaticResource LocProxy}}" Binding="{Binding ScoreDisplay}" Width="1*"/>
+                                    <DataGridTextColumn Header="{Binding Data.ColClass, Source={StaticResource LocProxy}}" Binding="{Binding PhyKindDisplay}" Width="2*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
                     </Border>
                 </Grid>
 
-                <!-- Progress Bar & Status Text -->
-                <StackPanel Grid.Row="2" VerticalAlignment="Center" Margin="50,0">
-                    <TextBlock Text="{Binding SpeedTestStatus.CurrentStage}" FontSize="16" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                    <ProgressBar Value="{Binding SpeedTestStatus.ProgressPercentage}" Maximum="100" Height="20" Style="{StaticResource KillerProgressBarStyle}"/>
-                </StackPanel>
+                <!-- RIGHT COLUMN: SPEED TEST PANEL -->
+                <Border Grid.Column="2" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <!-- Title -->
+                            <RowDefinition Height="*"/> <!-- Gauges -->
+                            <RowDefinition Height="Auto"/> <!-- Progress -->
+                            <RowDefinition Height="Auto"/> <!-- Start Button -->
+                        </Grid.RowDefinitions>
 
-                <!-- Start Speed Test Button -->
-                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
-                    <Button Content="{Binding Loc.BtnStartSpeedTest}" Command="{Binding StartSpeedTestCommand}" Style="{StaticResource KillerButtonStyle}" Padding="35,14" FontSize="16" FontWeight="Bold"/>
-                </StackPanel>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                            <TextBlock Text="🚀 " FontSize="18"/>
+                            <TextBlock Text="{Binding Loc.SpeedTestTabTitle}" FontSize="16" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- 2x2 Metrics Grid -->
+                        <Grid Grid.Row="1" VerticalAlignment="Center" Margin="0,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="12"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="12"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Ping -->
+                            <Border Grid.Row="0" Grid.Column="0" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Loc.PingLabel}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding SpeedTestStatus.PingMs, StringFormat='{}{0} ms'}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" Margin="0,6,0,0" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Jitter -->
+                            <Border Grid.Row="0" Grid.Column="2" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Loc.JitterLabel}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding SpeedTestStatus.JitterMs, StringFormat='{}{0} ms'}" FontSize="22" FontWeight="Bold" Foreground="#FF9900" Margin="0,6,0,0" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Download -->
+                            <Border Grid.Row="2" Grid.Column="0" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Loc.DownloadLabel}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding SpeedTestStatus.DownloadMbps, StringFormat='{}{0:F1} Mbps'}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}" Margin="0,6,0,0" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Upload -->
+                            <Border Grid.Row="2" Grid.Column="2" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Loc.UploadLabel}" FontSize="13" Foreground="{DynamicResource KillerMutedBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding SpeedTestStatus.UploadMbps, StringFormat='{}{0:F1} Mbps'}" FontSize="22" FontWeight="Bold" Foreground="#A855F7" Margin="0,6,0,0" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Progress Bar & Status Text -->
+                        <StackPanel Grid.Row="2" VerticalAlignment="Center" Margin="10,10,10,5">
+                            <TextBlock Text="{Binding SpeedTestStatus.CurrentStage}" FontSize="14" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <ProgressBar Value="{Binding SpeedTestStatus.ProgressPercentage}" Maximum="100" Height="14" Style="{StaticResource KillerProgressBarStyle}"/>
+                        </StackPanel>
+
+                        <!-- Start Speed Test Button -->
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                            <Button Content="{Binding Loc.BtnStartSpeedTest}" Command="{Binding StartSpeedTestCommand}" Style="{StaticResource KillerButtonStyle}" Padding="25,10" FontSize="14" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </Grid>
-        </Border>
+        </ScrollViewer>
+
+        <!-- TAB 1: SYSTEM OPTIMIZER (RAM BOOSTER & JUNK CLEANER) -->
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="{Binding CurrentTabIndex, Converter={StaticResource TabIndexToVisConverter}, ConverterParameter=1}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/> <!-- Left: RAM Booster & Process List -->
+                    <ColumnDefinition Width="15"/> <!-- Spacing -->
+                    <ColumnDefinition Width="2*"/> <!-- Right: Safe Junk Cleaner -->
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT PANEL: RAM BOOSTER & TASK MANAGER -->
+                <Border Grid.Column="0" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <!-- Title & Optimize Button -->
+                            <RowDefinition Height="Auto"/> <!-- RAM Gauge -->
+                            <RowDefinition Height="*"/>    <!-- Process DataGrid -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Header -->
+                        <Grid Grid.Row="0" Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Vertical">
+                                <TextBlock Text="{Binding Loc.RamBoosterTitle}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}"/>
+                                <TextBlock Text="{Binding Loc.RamBoosterDesc}" FontSize="12" Foreground="{DynamicResource KillerMutedBrush}"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" Content="{Binding Loc.BtnOptimizeRam}" Command="{Binding OptimizeRamCommand}" Style="{StaticResource KillerButtonStyle}" Padding="15,8" FontSize="13" FontWeight="Bold"/>
+                        </Grid>
+
+                        <!-- RAM Gauge Bar -->
+                        <Border Grid.Row="1" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,6">
+                                    <TextBlock Text="System Memory / RAM Sử Dụng:" FontSize="13" FontWeight="SemiBold" Foreground="White"/>
+                                    <TextBlock Text="{Binding MemoryStatus.DisplayText}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <ProgressBar Value="{Binding MemoryStatus.UsedPercentage}" Maximum="100" Height="14" Style="{StaticResource KillerProgressBarStyle}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Process List DataGrid -->
+                        <DataGrid Grid.Row="2" ItemsSource="{Binding TopProcesses}" Style="{StaticResource KillerDataGridStyle}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MaxHeight="350">
+                            <DataGrid.Columns>
+                                <!-- App Icon & Name -->
+                                <DataGridTemplateColumn Header="{Binding Data.ColProcName, Source={StaticResource LocProxy}}" Width="3*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Image Source="{Binding ExecutablePath, Converter={StaticResource ExePathToIconConverter}}" Width="18" Height="18" Margin="0,0,8,0" Stretch="Uniform"/>
+                                                <TextBlock Text="{Binding DisplayName}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- PID -->
+                                <DataGridTextColumn Header="{Binding Data.ColProcId, Source={StaticResource LocProxy}}" Binding="{Binding ProcessId}" Width="1*"/>
+
+                                <!-- RAM MB -->
+                                <DataGridTextColumn Header="{Binding Data.ColProcRam, Source={StaticResource LocProxy}}" Binding="{Binding WorkingSetDisplay}" Width="2*"/>
+
+                                <!-- Action Button (End Task) -->
+                                <DataGridTemplateColumn Header="{Binding Data.ColProcAction, Source={StaticResource LocProxy}}" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding DataContext.Loc.BtnEndTask, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                    Command="{Binding DataContext.EndTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                    CommandParameter="{Binding ProcessId}"
+                                                    Style="{StaticResource KillerSmallButtonStyle}" 
+                                                    Background="#33FF3355" BorderBrush="#FF3355" Foreground="#FF3355"
+                                                    Padding="8,4" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <!-- RIGHT PANEL: SAFE JUNK CLEANER -->
+                <Border Grid.Column="2" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <!-- Title -->
+                            <RowDefinition Height="*"/>    <!-- Junk Details -->
+                            <RowDefinition Height="Auto"/> <!-- Total Size & Buttons -->
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                            <TextBlock Text="{Binding Loc.JunkCleanerTitle}" FontSize="15" FontWeight="Bold" Foreground="#38BDF8"/>
+                            <TextBlock Text="{Binding Loc.JunkCleanerDesc}" FontSize="12" Foreground="{DynamicResource KillerMutedBrush}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <!-- Junk Details Box -->
+                        <Border Grid.Row="1" Background="#0A0D14" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="15" VerticalAlignment="Stretch">
+                            <StackPanel VerticalAlignment="Center">
+                                <Grid Margin="0,8">
+                                    <TextBlock Text="{Binding Loc.JunkUserTempLabel}" FontSize="13" Foreground="White"/>
+                                    <TextBlock Text="{Binding JunkResult.UserTempFiles, StringFormat='{}{0} files'}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,8">
+                                    <TextBlock Text="{Binding Loc.JunkWinTempLabel}" FontSize="13" Foreground="White"/>
+                                    <TextBlock Text="{Binding JunkResult.WinTempFiles, StringFormat='{}{0} files'}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,8">
+                                    <TextBlock Text="{Binding Loc.JunkRecycleBinLabel}" FontSize="13" Foreground="White"/>
+                                    <TextBlock Text="{Binding JunkResult.RecycleBinItems, StringFormat='{}{0} items'}" FontSize="13" FontWeight="Bold" Foreground="#FF9900" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid Margin="0,6">
+                                    <TextBlock Text="{Binding Loc.JunkLogsLabel}" FontSize="13" Foreground="White"/>
+                                    <TextBlock Text="{Binding JunkResult.LogFiles, StringFormat='{}{0} files'}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Border BorderBrush="#1F2E40" BorderThickness="0,1,0,0" Margin="0,8,0,4" Padding="0,8,0,0">
+                                    <Grid>
+                                        <TextBlock Text="⚡ Ultra COMPRESS Mode:" FontSize="13" FontWeight="Bold" Foreground="#A855F7"/>
+                                        <TextBlock Text="Ready (~2-5GB C:)" FontSize="12" FontWeight="ExtraBold" Foreground="#00F280" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Total Size & Buttons -->
+                        <StackPanel Grid.Row="2" Margin="0,15,0,0">
+                            <Border Background="#152433" BorderBrush="{DynamicResource KillerAccentBrush}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,15">
+                                <Grid>
+                                    <TextBlock Text="{Binding Loc.TotalJunkFoundLabel}" FontSize="13" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding JunkResult.TotalSizeDisplay}" FontSize="20" FontWeight="ExtraBold" Foreground="#00F280" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Border>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="{Binding Loc.BtnScanJunk}" Command="{Binding ScanJunkCommand}" Style="{StaticResource KillerButtonStyle}" Padding="10,12" FontSize="13" FontWeight="Bold"/>
+                                <Button Grid.Column="2" Content="{Binding Loc.BtnCleanJunk}" Command="{Binding CleanJunkCommand}" Style="{StaticResource KillerButtonStyle}" Background="#FF007F" BorderBrush="#FF007F" Padding="10,12" FontSize="13" FontWeight="Bold"/>
+                            </Grid>
+                            <Button Content="{Binding Loc.BtnUltraCompress}" Command="{Binding UltraCompressCommand}" Style="{StaticResource KillerButtonStyle}" Background="#7928CA" BorderBrush="#A855F7" Foreground="White" Padding="10,12" FontSize="13" FontWeight="ExtraBold">
+                                <Button.ToolTip>
+                                    <ToolTip Content="Kích hoạt chế độ Ultra COMPRESS Mode (số 4) - Nén WOF CompactOS và WinSxS để tiết kiệm 2GB đến 5GB dung lượng ổ C:."/>
+                                </Button.ToolTip>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
 
         <!-- TAB 2: SETTINGS PANEL -->
-        <Border Grid.Row="3" Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="30" Visibility="{Binding CurrentTabIndex, Converter={StaticResource TabIndexToVisConverter}, ConverterParameter=2}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="{Binding CurrentTabIndex, Converter={StaticResource TabIndexToVisConverter}, ConverterParameter=2}">
+            <Border Background="{DynamicResource KillerPanelBrush}" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="30">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,25">
-                    <TextBlock Text="⚙ " FontSize="22" Foreground="{DynamicResource KillerAccentBrush}"/>
-                    <TextBlock Text="{Binding Loc.SettingsTitle}" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                </StackPanel>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,25">
+                        <TextBlock Text="⚙ " FontSize="22" Foreground="{DynamicResource KillerAccentBrush}"/>
+                        <TextBlock Text="{Binding Loc.SettingsTitle}" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                    </StackPanel>
 
-                <StackPanel Grid.Row="1" Width="650" HorizontalAlignment="Left">
-                    <!-- Language Selection -->
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Loc.LanguageLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Command="{Binding SwitchLanguageCommand}" CommandParameter="vn" Content="🇻🇳 Tiếng Việt (VN)" Style="{StaticResource KillerSmallButtonStyle}" Padding="15,8" Margin="0,0,10,0"/>
-                            <Button Command="{Binding SwitchLanguageCommand}" CommandParameter="en" Content="🇺🇸 English (US)" Style="{StaticResource KillerSmallButtonStyle}" Padding="15,8"/>
-                        </StackPanel>
-                    </Grid>
+                    <StackPanel Grid.Row="1" MaxWidth="700" HorizontalAlignment="Stretch">
+                        <!-- Language Selection -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Loc.LanguageLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Command="{Binding SwitchLanguageCommand}" CommandParameter="vn" Content="🇻🇳 Tiếng Việt (VN)" Style="{StaticResource KillerSmallButtonStyle}" Padding="15,8" Margin="0,0,10,0"/>
+                                <Button Command="{Binding SwitchLanguageCommand}" CommandParameter="en" Content="🇺🇸 English (US)" Style="{StaticResource KillerSmallButtonStyle}" Padding="15,8"/>
+                            </StackPanel>
+                        </Grid>
 
-                    <!-- Run on Windows Startup -->
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Loc.StartupLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding CurrentSettings.RunOnStartup}" Content="Enabled / Bật tự khởi động" Foreground="{DynamicResource KillerGreenBrush}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
-                    </Grid>
+                        <!-- Run on Windows Startup -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Loc.StartupLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
+                            <CheckBox Grid.Column="1" IsChecked="{Binding CurrentSettings.RunOnStartup}" Content="Enabled / Bật tự khởi động" Foreground="{DynamicResource KillerGreenBrush}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </Grid>
 
-                    <!-- Polling Interval -->
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Loc.PollIntervalLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Value="{Binding CurrentSettings.PollIntervalSeconds}" Minimum="1" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="{Binding CurrentSettings.PollIntervalSeconds, StringFormat='{}{0}s'}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    </Grid>
+                        <!-- Polling Interval -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Loc.PollIntervalLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
+                            <Slider Grid.Column="1" Value="{Binding CurrentSettings.PollIntervalSeconds}" Minimum="1" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding CurrentSettings.PollIntervalSeconds, StringFormat='{}{0}s'}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
 
-                    <!-- Min 5GHz Quality Threshold -->
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="60"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Loc.ThresholdLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Value="{Binding CurrentSettings.Min5GhzQualityThreshold}" Minimum="20" Maximum="70" TickFrequency="5" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="{Binding CurrentSettings.Min5GhzQualityThreshold, StringFormat='{}{0}%'}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    </Grid>
+                        <!-- Min 5GHz Quality Threshold -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Loc.ThresholdLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
+                            <Slider Grid.Column="1" Value="{Binding CurrentSettings.Min5GhzQualityThreshold}" Minimum="20" Maximum="70" TickFrequency="5" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding CurrentSettings.Min5GhzQualityThreshold, StringFormat='{}{0}%'}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
 
-                    <!-- Theme Selection (Bound to SelectedTheme for Real-Time Switching) -->
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="280"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Loc.ThemeLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1" SelectedValue="{Binding SelectedTheme, Mode=TwoWay}" SelectedValuePath="Tag" Width="240" HorizontalAlignment="Left" Padding="10,8" FontSize="14">
-                            <ComboBoxItem Content="HyperDark Space (Default)" Tag="HyperDark"/>
-                            <ComboBoxItem Content="CyberNeon Glow" Tag="CyberNeon"/>
-                            <ComboBoxItem Content="OLED Deep Black" Tag="OLEDBlack"/>
-                        </ComboBox>
-                    </Grid>
-                </StackPanel>
+                        <!-- Auto RAM Cleaner Toggle & Interval -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Loc.AutoCleanRamLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <CheckBox IsChecked="{Binding CurrentSettings.AutoCleanRamEnabled}" Content="Bật / Enable" Foreground="{DynamicResource KillerGreenBrush}" FontSize="14" FontWeight="Bold" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                <Slider Value="{Binding CurrentSettings.AutoCleanRamIntervalSeconds}" Minimum="30" Maximum="300" TickFrequency="30" IsSnapToTickEnabled="True" Width="150" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="{Binding CurrentSettings.AutoCleanRamIntervalSeconds, StringFormat='{}{0}s'}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource KillerAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                    <Button Content="{Binding Loc.BtnSaveSettings}" Command="{Binding SaveSettingsCommand}" Style="{StaticResource KillerButtonStyle}" Padding="25,10" FontSize="14" Margin="0,0,15,0"/>
-                    <Button Content="{Binding Loc.BtnClose}" Command="{Binding SwitchTabCommand}" CommandParameter="0" Style="{StaticResource KillerSmallButtonStyle}" Padding="20,10" FontSize="14"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+                        <!-- Theme Selection (Bound to SelectedTheme for Real-Time Switching) -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="280"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Loc.ThemeLabel}" FontSize="15" Foreground="White" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Column="1" SelectedValue="{Binding SelectedTheme, Mode=TwoWay}" SelectedValuePath="Tag" Width="240" HorizontalAlignment="Left" Padding="10,8" FontSize="14">
+                                <ComboBoxItem Content="HyperDark Space (Default)" Tag="HyperDark"/>
+                                <ComboBoxItem Content="CyberNeon Glow" Tag="CyberNeon"/>
+                                <ComboBoxItem Content="OLED Deep Black" Tag="OLEDBlack"/>
+                                <ComboBoxItem Content="Matrix Cyber Green" Tag="MatrixEmerald"/>
+                                <ComboBoxItem Content="Synthwave Sunset" Tag="SunsetPulse"/>
+                                <ComboBoxItem Content="Nordic Frost Blue" Tag="NordicFrost"/>
+                                <ComboBoxItem Content="Royal Gold Obsidian" Tag="GoldPrestige"/>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                        <Button Content="{Binding Loc.BtnSaveSettings}" Command="{Binding SaveSettingsCommand}" Style="{StaticResource KillerButtonStyle}" Padding="25,10" FontSize="14" Margin="0,0,15,0"/>
+                        <Button Content="{Binding Loc.BtnClose}" Command="{Binding SwitchTabCommand}" CommandParameter="0" Style="{StaticResource KillerSmallButtonStyle}" Padding="20,10" FontSize="14"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </ScrollViewer>
 
         <!-- BOTTOM ACTIVITY LOG WITH CLEAR BUTTON -->
         <Border Grid.Row="4" Background="#0E121A" BorderBrush="{DynamicResource KillerBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,15,0,0">
@@ -398,17 +620,17 @@
                 <ListBox Grid.Row="1" ItemsSource="{Binding ActivityLogs}" Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,3">
+                            <Grid Margin="0,4">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="140"/>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="135"/>
+                                    <ColumnDefinition Width="125"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss.fff}'}" FontFamily="Consolas" Foreground="{DynamicResource KillerMutedBrush}" FontSize="12"/>
-                                <Border Grid.Column="1" Background="#1A2333" CornerRadius="3" Padding="6,2" HorizontalAlignment="Left">
-                                    <TextBlock Text="{Binding ToBand, StringFormat='-> {0}'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource KillerGreenBrush}"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss}'}" FontFamily="Consolas" Foreground="{DynamicResource KillerMutedBrush}" FontSize="12" VerticalAlignment="Center"/>
+                                <Border Grid.Column="1" Background="{Binding BadgeBgColor}" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding CategoryBadge}" FontSize="11" FontWeight="Bold" Foreground="{Binding BadgeTextColor}"/>
                                 </Border>
-                                <TextBlock Grid.Column="2" Text="{Binding Reason}" Foreground="White" FontSize="12" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Reason}" Foreground="{Binding MessageTextColor}" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center"/>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

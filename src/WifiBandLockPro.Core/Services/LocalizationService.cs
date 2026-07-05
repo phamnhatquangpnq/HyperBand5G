@@ -1,65 +1,85 @@
 // Standardized to production level
-// Purpose: MVVM Localization Service supporting real-time language switching between Vietnamese (VN) and English (EN)
-// Dependencies: System.ComponentModel, System.Runtime.CompilerServices
+// Purpose: Bilingual localization service (Vietnamese & English) for UI text binding
+// Dependencies: System, System.ComponentModel
 
 namespace WifiBandLockPro.Core.Services;
 
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 public class LocalizationService : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
+    private string _currentLanguage = "vn";
 
-    private string _currentLang = "vn"; // Default Vietnamese
-
-    public string CurrentLang => _currentLang;
-    public bool IsVietnamese => _currentLang == "vn";
-
-    public LocalizationService(string initialLang = "vn")
+    public LocalizationService(string defaultLanguage = "vn")
     {
-        _currentLang = string.Equals(initialLang, "en", StringComparison.OrdinalIgnoreCase) ? "en" : "vn";
+        _currentLanguage = defaultLanguage.ToLower() == "en" ? "en" : "vn";
     }
 
     public void SetLanguage(string lang)
     {
-        if (!string.Equals(_currentLang, lang, StringComparison.OrdinalIgnoreCase))
+        if (_currentLanguage != lang)
         {
-            _currentLang = string.Equals(lang, "en", StringComparison.OrdinalIgnoreCase) ? "en" : "vn";
-            // Fire PropertyChanged for ALL properties by passing null/empty string
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+            _currentLanguage = lang.ToLower() == "en" ? "en" : "vn";
+            OnPropertyChanged(string.Empty); // Notify all properties changed
         }
     }
 
-    // --- Localized Strings (Rebranded to HyperBand 5G) ---
+    public bool IsVietnamese => _currentLanguage == "vn";
 
-    public string AppSubtitle => IsVietnamese ? "HYPERBAND 5G SUITE" : "HYPERBAND 5G SUITE";
-    public string DashboardTabTitle => IsVietnamese ? "★ TRUNG TÂM ĐIỀU KHIỂN" : "★ INTELLIGENCE CENTER";
+    // --- Header & Subtitle ---
+    public string AppTitle => IsVietnamese ? "⚡ HYPERBOOST 5G & PC SUITE v2.0" : "⚡ HYPERBOOST 5G & PC SUITE v2.0";
+    public string AppSubtitle => IsVietnamese 
+        ? "Tự Động Khóa Băng Tần 5GHz/6GHz • Tối Ưu RAM & Dọn Rác Máy Tính An Toàn" 
+        : "Autonomous 5GHz/6GHz Wi-Fi Steering • Smart RAM Booster & Safe PC Optimizer";
+
+    // --- Tabs ---
+    public string DashboardTabTitle => IsVietnamese ? "📡 QUẢN LÝ WI-FI & ĐO TỐC ĐỘ" : "📡 WI-FI & SPEED TEST";
     public string SpeedTestTabTitle => IsVietnamese ? "🚀 ĐO TỐC ĐỘ WI-FI" : "🚀 WI-FI SPEED TEST";
-    public string SettingsTabTitle => IsVietnamese ? "⚙ CÀI ĐẶT HỆ THỐNG" : "⚙ SETTINGS";
+    public string SystemOptimizerTabTitle => IsVietnamese ? "⚡ TỐI ƯU RAM & DỌN RÁC" : "⚡ RAM & JUNK OPTIMIZER";
 
-    public string SmartSelectionTitle => IsVietnamese ? "Tự Động Chọn Điểm Phát Sóng (Khóa 5GHz)" : "Smart Access Point Selection (5GHz Auto-Lock)";
-    public string SmartSelectionDesc => IsVietnamese 
-        ? "Tự động phát hiện khi Windows bị rớt xuống băng tần 2.4 GHz trên Wi-Fi gộp và ngay lập tức ép chuyển lại băng tần 5 GHz tốc độ cao." 
-        : "Automatically detects when Windows switches to 2.4 GHz on dual-band SSIDs and instantly forces a switch back to the faster 5 GHz band.";
-    public string ActiveMonitoring => IsVietnamese ? "ĐANG GIÁM SÁT" : "ACTIVE MONITORING";
+    // --- Dashboard Section ---
+    public string ActiveNetworkTitle => IsVietnamese ? "KẾT NỐI WI-FI HIỆN TẠI (ACTIVE CONNECTION)" : "CURRENT ACTIVE WI-FI CONNECTION";
+    public string AvailableNetworksTitle => IsVietnamese ? "CÁC BĂNG TẦN BSSID KHÁC TRONG PHẠM VI (AVAILABLE BSSIDs)" : "OTHER NEARBY BSSIDs & WIRELESS BANDS";
+    public string SmartLockStatusLabel => IsVietnamese ? "Chế Độ Khóa 5GHz:" : "5GHz Auto-Lock Status:";
 
-    public string AuthorizedNetworksTitle => IsVietnamese ? "Mạng Đang Kết Nối (Các điểm phát BSSID của SSID hiện tại)" : "Authorized Networks (Current SSID BSSIDs)";
-    public string AuthorizedNetworksDesc => IsVietnamese ? "- Điểm phát sóng từ router bạn đang kết nối" : "- Access points broadcasted by your active router";
-    public string AvailableNetworksTitle => IsVietnamese ? "Các Mạng Khả Dụng (Wi-Fi xung quanh)" : "Available Networks (Other Nearby Wi-Fi)";
-    
-    public string ActivityLogTitle => IsVietnamese ? "Lịch Sử Tự Động Chuyển Băng Tần & Nhật Ký Hệ Thống" : "Auto-Switch Activity Log & Band Steering Audit";
-    public string ActivityLogDesc => IsVietnamese ? "- Chi tiết các sự kiện chuyển băng tần tự động theo thời gian thực" : "- Real-time events when Windows switches bands";
-    public string BtnClearLogs => IsVietnamese ? "🗑️ Xóa Lịch Sử" : "🗑️ Clear Logs";
+    // --- Speed Test Section ---
+    public string SpeedTestHeader => IsVietnamese ? "KIỂM TRA TỐC ĐỘ MẠNG THỰC TẾ (CLOUDFLARE EDGE CDN)" : "REAL-TIME EDGE NETWORK SPEED TEST (CLOUDFLARE CDN)";
+    public string PingLabel => IsVietnamese ? "Độ Trễ (Ping):" : "Latency (Ping):";
+    public string JitterLabel => IsVietnamese ? "Độ Dao Động (Jitter):" : "Jitter (Variation):";
+    public string DownloadLabel => IsVietnamese ? "Tốc Độ Tải Xuống (Download):" : "Download Bandwidth:";
+    public string UploadLabel => IsVietnamese ? "Tốc Độ Tải Lên (Upload):" : "Upload Bandwidth:";
+    public string BtnStartSpeedTest => IsVietnamese ? "⚡ BẮT ĐẦU ĐO TỐC ĐỘ" : "⚡ START SPEED TEST";
+    public string BtnStopSpeedTest => IsVietnamese ? "🛑 DỪNG ĐO" : "🛑 ABORT TEST";
 
-    public string SpeedTestDesc => IsVietnamese ? "- Kiểm tra tốc độ thực tế Ping, Jitter, Download & Upload qua CDN Cloudflare" : "- Real-time Ping, Jitter, Download & Upload test via Cloudflare CDN";
-    public string BtnStartSpeedTest => IsVietnamese ? "BẮT ĐẦU ĐO TỐC ĐỘ" : "START SPEED TEST";
-    public string PingLabel => IsVietnamese ? "Độ Trễ (Ping)" : "Latency (Ping)";
-    public string JitterLabel => IsVietnamese ? "Độ Nhiễu (Jitter)" : "Jitter";
-    public string DownloadLabel => IsVietnamese ? "Tốc Độ Tải Xuống (Download)" : "Download Speed";
-    public string UploadLabel => IsVietnamese ? "Tốc Độ Tải Lên (Upload)" : "Upload Speed";
+    // --- System Optimizer Section ---
+    public string RAMHeader => IsVietnamese ? "QUẢN LÝ BỘ NHỚ RAM & TỐI ƯU HỆ THỐNG" : "SYSTEM RAM MONITOR & MEMORY BOOSTER";
+    public string TotalRAMLabel => IsVietnamese ? "Tổng RAM Hệ Thống:" : "Total System RAM:";
+    public string UsedRAMLabel => IsVietnamese ? "Đang Sử Dụng:" : "Currently Used:";
+    public string FreeRAMLabel => IsVietnamese ? "Còn Trống (Available):" : "Available Memory:";
+    public string BtnOptimizeRAM => IsVietnamese ? "⚡ TỐI ƯU RAM NGAY" : "⚡ OPTIMIZE RAM NOW";
+    public string BtnEndTask => IsVietnamese ? "❌ ĐÓNG ỨNG DỤNG" : "❌ END TASK";
+    public string ProcessListTitle => IsVietnamese ? "DANH SÁCH ỨNG DỤNG ĐANG CHẠY (TOP MEMORY CONSUMERS)" : "RUNNING PROCESSES (TOP MEMORY CONSUMERS)";
+    public string ColProcIcon => IsVietnamese ? "Icon" : "Icon";
+    public string ColProcName => IsVietnamese ? "Tên Ứng Dụng" : "Application Name";
+    public string ColProcRAM => IsVietnamese ? "RAM Sử Dụng" : "Memory (MB)";
+    public string ColProcAction => IsVietnamese ? "Thao Tác" : "Action";
+    public string AutoCleanRAMLabel => IsVietnamese ? "Tự động dọn RAM (giây):" : "Auto-clean RAM (seconds):";
 
+    // --- Junk Cleaner Section ---
+    public string JunkHeader => IsVietnamese ? "DỌN RÁC HỆ THỐNG AN TOÀN (SAFE JUNK CLEANER)" : "SAFE SYSTEM JUNK CLEANER (NON-DESTRUCTIVE)";
+    public string JunkDesc => IsVietnamese 
+        ? "Quy tắc an toàn: Chỉ dọn file tạm %TEMP%, Windows\\Temp, C:\\Temp và Thùng rác. Tuyệt đối không xóa file cá nhân hay hệ thống."
+        : "Safety Protocol: Strictly cleans %TEMP%, Windows\\Temp, C:\\Temp, and Recycle Bin. Never touches personal or system files.";
+    public string BtnScanJunk => IsVietnamese ? "🔍 QUÉT RÁC" : "🔍 SCAN JUNK";
+    public string BtnCleanJunk => IsVietnamese ? "🧹 DỌN SẠCH AN TOÀN" : "🧹 CLEAN SAFE JUNK";
+    public string JunkUserTempLabel => IsVietnamese ? "• File rác tạm thời người dùng (%TEMP%):" : "• User Temporary Files (%TEMP%):";
+    public string JunkWinTempLabel => IsVietnamese ? "• File rác tạm thời hệ thống (Windows\\Temp & C:\\Temp):" : "• System Temp Files (Windows\\Temp & C:\\Temp):";
+    public string JunkRecycleBinLabel => IsVietnamese ? "• Thùng rác hệ thống (Recycle Bin):" : "• Windows Recycle Bin Items:";
+    public string JunkLogsLabel => IsVietnamese ? "• File nhật ký & báo cáo lỗi cũ (Crash Logs):" : "• System Error Reporting & Crash Logs:";
+    public string TotalJunkFoundLabel => IsVietnamese ? "TỔNG DUNG LƯỢNG RÁC TÌM THẤY:" : "TOTAL JUNK SIZE FOUND:";
+
+    // --- Common Tables & Settings ---
     public string ColName => IsVietnamese ? "Tên Wi-Fi" : "Name";
     public string ColBssid => IsVietnamese ? "Mã BSSID" : "Unique ID (BSSID)";
     public string ColScore => IsVietnamese ? "Điểm số" : "Score";
@@ -86,5 +106,34 @@ public class LocalizationService : INotifyPropertyChanged
     public string Badge24Ghz => IsVietnamese ? "2.4 GHz (Cảnh báo - Chậm)" : "2.4 GHz (Warning - Slow Band)";
     public string BadgeScanning => IsVietnamese ? "Đang quét..." : "Scanning...";
     public string BadgeDisconnected => IsVietnamese ? "Mất kết nối" : "Disconnected";
-    public string BadgeActive => IsVietnamese ? "★ ĐANG DÙNG" : "★ ACTIVE";
+    public string BadgeActive => IsVietnamese ? "★ ĐANG DÙNG WIFI NÀY" : "★ CURRENTLY USING";
+
+    // --- UI Alias & Missing Binding Fixes ---
+    public string OptimizerTabTitle => SystemOptimizerTabTitle;
+    public string SettingsTabTitle => IsVietnamese ? "⚙️ CÀI ĐẶT" : "⚙️ SETTINGS";
+    public string SmartSelectionTitle => IsVietnamese ? "TỰ ĐỘNG KHÓA BĂNG TẦN 5GHZ/6GHZ (SMART STEERING)" : "5GHZ/6GHZ SMART BAND STEERING & LOCK";
+    public string ActiveMonitoring => IsVietnamese ? "★ ĐANG GIÁM SÁT NGẦM" : "★ ACTIVE MONITORING";
+    public string SmartSelectionDesc => IsVietnamese ? "Tự động phát hiện khi router chuyển sang 2.4GHz chậm chạp và lập tức ép kết nối lại BSSID 5GHz/6GHz tốc độ cao nhất." : "Automatically detects drops to slow 2.4GHz bands and instantly switches your Wi-Fi card back to the fastest 5GHz/6GHz BSSID.";
+    public string AuthorizedNetworksTitle => IsVietnamese ? "DANH SÁCH BSSID HIỆN TẠI ĐANG KẾT NỐI & TỐI ƯU" : "CURRENT CONNECTED & OPTIMIZED BSSID LIST";
+    public string AuthorizedNetworksDesc => IsVietnamese ? "Các điểm truy cập (BSSID) thuộc cùng tên mạng Wi-Fi của bạn." : "Access points (BSSIDs) belonging to your current Wi-Fi network.";
+    public string SpeedTestDesc => IsVietnamese ? "Đo tốc độ thực tế với máy chủ edge Cloudflare toàn cầu (Độ trễ, Jitter, Download, Upload)." : "Measure real-world edge performance with global Cloudflare servers (Ping, Jitter, Download, Upload).";
+    public string RamBoosterTitle => RAMHeader;
+    public string RamBoosterDesc => IsVietnamese ? "Trích xuất icon ứng dụng, hiển thị RAM thực tế và dọn dẹp bộ nhớ đệm Standby List không gây lỗi app." : "Extracts app icons, monitors real-time RAM, and trims Standby List memory without crashing apps.";
+    public string BtnOptimizeRam => BtnOptimizeRAM;
+    public string ColProcId => "ID";
+    public string ColProcRam => ColProcRAM;
+    public string JunkCleanerTitle => JunkHeader;
+    public string JunkCleanerDesc => JunkDesc;
+    public string AutoCleanRamLabel => AutoCleanRAMLabel;
+    public string ActivityLogTitle => IsVietnamese ? "📜 NHẬT KÝ HOẠT ĐỘNG HỆ THỐNG" : "📜 SYSTEM ACTIVITY LOGS";
+    public string ActivityLogDesc => IsVietnamese ? "Ghi nhận mọi thao tác tự động chuyển băng tần và dọn RAM." : "Records all automatic band steering and RAM optimization events.";
+    public string BtnClearLogs => IsVietnamese ? "🗑️ Xóa Nhật Ký" : "🗑️ Clear Logs";
+    public string BtnUltraCompress => IsVietnamese ? "⚡ Ultra COMPRESS Mode - Siêu Tiết Kiệm Ổ C:" : "⚡ Ultra COMPRESS Mode - Super Space Save C:";
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }

@@ -1,77 +1,98 @@
-# HyperBand 5G - System Architecture & Plan (.NET WPF Edition)
-
-// Standardized to production level
-// Purpose: Architecture definition, technical stack, TDD workflow, and feature roadmap for HyperBand 5G Desktop Application
-// Dependencies: Windows 10/11, .NET 10.0 SDK, WPF, xUnit
-
-## 1. Executive Summary & Technology Stack
-To solve the frustrating problem of Windows laptops bouncing between 2.4GHz and 5GHz on combined (dual-band/mesh) SSIDs, we have built a **Production-Ready Windows Desktop Application** using **C# and .NET 10 WPF (Windows Presentation Foundation)**.
-
-### Why C# & .NET WPF over Electron/Node.js?
-1. **Direct Windows Native API & CLI Access**: Flawless interaction with Windows Native Wi-Fi APIs (`Wlanapi.dll`), `netsh wlan`, and Power Management without requiring cumbersome Node.js native wrappers or Python bridges.
-2. **Zero Memory Bloat**: Electron uses ~150-300 MB RAM for a background system tray tool. A C# .NET WPF app consumes ~15-25 MB RAM and runs silently in the system tray with near-zero CPU overhead.
-3. **Rich HyperBand 5G Aesthetics**: Using WPF XAML styling, we deliver a stunning, dark-mode, glassmorphic UI with customizable themes (HyperDark, CyberNeon, OLEDBlack).
-4. **Clean Architecture & TDD**: Built with a decoupled core class library (`WifiBandLockPro.Core`) and UI presentation layer (`WifiBandLockPro.App`), fully tested via **xUnit** (`WifiBandLockPro.Tests`).
+# ARCHITECTURE & SYSTEM DESIGN: HYPERBOOST 5G & PC SUITE
+**Version:** 2.0.0 (Production-Grade All-in-One Suite)  
+**Status:** Stage 2 - Antigravity Beast Mode Active  
+**Rebranding:** Renamed from *HyperBand 5G Suite* to **HyperBoost 5G & PC Suite**  
 
 ---
 
-## 2. System Architecture & Project Structure
+## 1. Executive Summary & Core Capabilities
+**HyperBoost 5G & PC Suite** is a state-of-the-art Windows desktop application built with **.NET 10.0 WPF** and **Clean MVVM Architecture**. It combines autonomous Wi-Fi 5GHz band steering with real-time network diagnostics, cloud-edge speed testing, intelligent RAM optimization, visual Task Management, and safe system junk cleaning.
 
+### Key Modules:
+1. **Smart Wi-Fi Band Steering (`AutoSwitchEngine`)**: Automatically detects when Windows drops to congested 2.4GHz bands on dual-band/mesh networks and seamlessly forces connection back to high-speed 5GHz/6GHz BSSIDs.
+2. **Real-Time Speed Test (`SpeedTestService`)**: Cloudflare CDN-backed latency (Ping), Jitter, Download, and Upload measurement.
+3. **RAM Booster & Task Manager (`SystemOptimizerService`)**:
+   - Real-time system memory monitoring (Total, Used %, Free GB via Win32 `GlobalMemoryStatusEx`).
+   - Live Process List showing running applications, CPU/RAM working set (MB), and extracted **Application Icons** (via Win32 `SHGetFileInfo`/`ExtractIconEx`).
+   - Interactive **End Task** capability (`process.Kill()`).
+   - **Auto RAM Cleaner Timer**: Background execution every 60 seconds (or customized interval) using Win32 `EmptyWorkingSet` (`psapi.dll`) without freezing applications or causing spikes.
+4. **Safe System Junk Cleaner (`SystemOptimizerService`)**:
+   - Strictly safe cleaning protocol: Never modifies user documents, downloads, or software configuration.
+   - 4-Tier Safe Targets: User Temp (`%TEMP%`), Windows Temp (`C:\Windows\Temp`), Windows Recycle Bin (`SHEmptyRecycleBin`), and obsolete system crash logs/dumps.
+5. **Dynamic Theme & Localization Engine (`LocalizationService` & ResourceDictionaries)**: Real-time theme switching (HyperDark, CyberNeon, OLEDBlack) and instant Vietnamese/English bilingual toggling.
+6. **Self-Contained Portable Packaging**: Zero-dependency single-file Windows executable (`HyperBoost.exe`) with custom embedded cybernetic Rocket/5G icon (`app.ico`).
+
+---
+
+## 2. Solution & Folder Structure
 ```
 WIFA/
-├── WifiBandLockPro.sln                     # C# .NET 10 Solution
-├── .gitignore                              # C# / Visual Studio / .NET Gitignore
-├── LICENSE                                 # MIT Open Source License for GitHub
-├── README.md                               # Viral promotional GitHub Readme with download instructions
 ├── .github/
 │   └── workflows/
-│       └── release.yml                     # GitHub Actions CI/CD for auto-publishing executable releases
-├── release/
-│   └── HyperBand5G.exe                     # Standalone Self-Contained Single-File Executable (No .NET required)
+│       └── release.yml                 # Automated CI/CD build & GitHub release
 ├── src/
-│   ├── WifiBandLockPro.Core/               # Core Domain & Logic (.NET 10 Library)
+│   ├── WifiBandLockPro.Core/           # Core Domain, Models, and Services (No UI dependencies)
 │   │   ├── Models/
-│   │   │   ├── WiFiModels.cs               # Records/DTOs: BSSIDNetwork, WiFiInterfaceStatus, SwitchEventLog
-│   │   │   ├── AppSettings.cs              # Application settings & preferences (Language, Theme, Startup)
-│   │   │   └── SpeedTestModels.cs          # Records/DTOs for Wi-Fi Speed Test (Ping, Jitter, Download, Upload)
+│   │   │   ├── WiFiInterfaceStatus.cs  # Network interface states
+│   │   │   ├── BSSIDNetwork.cs         # Scanned AP properties & score
+│   │   │   ├── AppSettings.cs          # User settings & auto-clean preferences
+│   │   │   ├── ProcessMemoryItem.cs    # [NEW] Process info, RAM MB, and extracted Icon
+│   │   │   ├── SystemMemoryStatus.cs   # [NEW] Total, Used, Free RAM gauge
+│   │   │   └── JunkScanResult.cs       # [NEW] Safe junk file counts and sizes
 │   │   ├── Services/
-│   │   │   ├── IWiFiService.cs             # Interface abstraction for network I/O & netsh commands
-│   │   │   ├── WiFiService.cs              # Windows netsh command parser & band calculation
-│   │   │   ├── AutoSwitchEngine.cs         # Autonomous monitoring & band steering engine
-│   │   │   ├── ISettingsService.cs / .cs   # JSON settings storage & Registry Startup manager
-│   │   │   ├── LocalizationService.cs      # MVVM real-time multi-language translation (VN/EN)
-│   │   │   ├── ThemeService.cs             # Real-time WPF ResourceDictionary theme switcher
-│   │   │   └── SpeedTestService.cs         # Built-in Wi-Fi speed test suite (Ping, Cloudflare CDN speed)
+│   │   │   ├── IWiFiService.cs / NativeWifiService.cs
+│   │   │   ├── AutoSwitchEngine.cs
+│   │   │   ├── ISpeedTestService.cs / SpeedTestService.cs
+│   │   │   ├── ISettingsService.cs / SettingsService.cs
+│   │   │   ├── LocalizationService.cs  # [UPDATED] Bilingual strings for RAM & Junk Cleaner
+│   │   │   └── ISystemOptimizerService.cs / SystemOptimizerService.cs # [NEW] RAM & Junk Engine
 │   │   └── ViewModels/
-│   │       ├── ViewModelBase.cs            # INotifyPropertyChanged base
-│   │       ├── RelayCommand.cs             # ICommand implementation
-│   │       └── MainViewModel.cs            # MVVM ViewModel coordinating UI state, speed test, & networks
-│   └── WifiBandLockPro.App/                # Presentation Layer (.NET 10 WPF Application)
-│       ├── app.ico                         # Custom Cyberpunk Neon Wi-Fi Radar application icon
-│       ├── App.xaml / App.xaml.cs          # Application resources, dark theme, & System Tray NotifyIcon
-│       ├── MainWindow.xaml / .xaml.cs      # HyperBand 5G dashboard UI with Settings, Speed Test, & Language
-│       └── Converters/
-│           └── ValueConverters.cs          # XAML value converters for badges & toggles
-└── tests/
-    └── WifiBandLockPro.Tests/              # TDD Test Suite (xUnit)
-        ├── WiFiServiceTests.cs             # Unit tests for command parsing & band math
-        ├── AutoSwitchEngineTests.cs        # Unit tests for autonomous band switching logic
-        ├── MainViewModelTests.cs           # Unit tests for ViewModel data binding
-        ├── LocalizationAndSettingsTests.cs # Unit tests for localization, string formatting, and settings
-        ├── SpeedTestAndThemeTests.cs       # Unit tests for speed test math, branding, and theme switching
-        └── PackagingAndGitHubTests.cs      # Unit tests for assembly packaging metadata and release verification
+│   │       ├── ViewModelBase.cs
+│   │       ├── RelayCommand.cs
+│   │       └── MainViewModel.cs        # [UPDATED] Coordinates Wi-Fi, SpeedTest, and Optimizer tabs
+│   └── WifiBandLockPro.App/            # WPF UI Layer
+│       ├── Resources/
+│       │   ├── app.ico                 # [NEW] Custom HyperBoost Cybernetic Icon
+│       │   └── Themes/                 # ResourceDictionaries (HyperDark, CyberNeon, OLEDBlack)
+│       ├── Converters/                 # WPF Value Converters (IconToImageSource, etc.)
+│       ├── App.xaml / App.xaml.cs      # System Tray & Startup logic
+│       └── MainWindow.xaml             # [UPDATED] 3-Tab Layout (Dashboard + SpeedTest side-by-side, Optimizer, Settings)
+├── tests/
+│   └── WifiBandLockPro.Tests/          # Automated TDD Test Suite (xUnit)
+│       ├── BSSIDNetworkTests.cs
+│       ├── AutoSwitchEngineTests.cs
+│       ├── PackagingAndGitHubTests.cs
+│       └── SystemOptimizerTests.cs     # [NEW] TDD tests for RAM cleaner, Process list, and Safe junk scan
+├── release_v2.0/                       # Final self-contained single-file portable executable
+├── Architecture.md                     # This document
+├── AI_Learnings.md                     # Knowledge base and technical discoveries
+├── README.md                           # Viral open-source promotional documentation
+└── LICENSE                             # MIT License
 ```
 
 ---
 
-## 3. TDD & Autonomous Implementation Roadmap
+## 3. Technical Specifications & Native Interop
+### 3.1 Win32 Memory & Process Optimization (`psapi.dll` & `kernel32.dll`)
+- `GlobalMemoryStatusEx`: Retreives accurate 64-bit physical memory statistics aligned with Windows Task Manager calculation.
+- `EmptyWorkingSet`: Trims idle RAM pages across accessible processes.
+- `SHGetFileInfo`: Extracts high-resolution associated icons (`HICON`) from process executables and converts them to WPF `BitmapSource` for seamless UI rendering.
 
-### Phase 1 to Phase 8 (Completed 100%)
-- [x] **Phase 1**: Core Domain Models & Netsh Command Parsing.
-- [x] **Phase 2**: Autonomous Band Steering Engine.
-- [x] **Phase 3**: MVVM ViewModel & UI Data Binding.
-- [x] **Phase 4**: Rich WPF XAML UI & System Tray Integration.
-- [x] **Phase 5**: Verification & Production Polish.
-- [x] **Phase 6**: Multi-Language (EN/VN), Settings & Auto-Start, UI Refinements.
-- [x] **Phase 7**: App Rebranding, Real-Time Theme & Language Switching, Built-In Speed Test Suite.
-- [x] **Phase 8**: Standalone Executable Packaging (`HyperBand5G.exe` in `/release`), Custom Icon (`app.ico`), and GitHub Viral Readiness (.gitignore, LICENSE, CI/CD workflow, README.md).
+### 3.2 Safe Junk Cleaner Protocol
+- **Recycle Bin**: Uses `SHEmptyRecycleBin` Win32 API with flags `SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND`.
+- **Temp Files**: Recursively traverses `%TEMP%` and `C:\Windows\Temp` subdirectories using safe enumeration, deleting files with `LastAccessTimeUtc < DateTime.UtcNow.AddHours(-24)` while gracefully handling file-lock IOExceptions.
+
+---
+
+## 4. Implementation Roadmap (TDD Workflow)
+- [x] **Phase 1: Foundation & Wi-Fi Steering** (Completed - 27/27 tests passing)
+- [x] **Phase 2: Rebranding & Custom Icon Generation** (HyperBoost 5G & PC Suite)
+- [x] **Phase 3: TDD & Core Engine for System Optimizer (`SystemOptimizerService`)**
+  - [x] Create `SystemOptimizerTests.cs` (TDD First).
+  - [x] Implement `SystemOptimizerService` (RAM gauge aligned with Task Manager, Process list with icons, End Task, Auto-clean timer, Recursive safe junk scanner).
+- [x] **Phase 4: UI/UX Optimization & Tab Consolidation (`MainWindow.xaml` & `MainViewModel`)**
+  - [x] Consolidated Speed Test directly into Main Dashboard (Tab 0) side-by-side with Wi-Fi tables.
+  - [x] Restored glowing Wi-Fi Signal Progress Bars in network grids and upgraded to **Segmented Wi-Fi Signal Gauge** (`SegmentedSignalBarStyle`) using `VisualBrush` & `UniformGrid` mask for multi-chunk LED styling.
+  - [x] Full Responsive Layout: Replaced fixed pixel widths in all DataGrids and containers with proportional Star-Sizing (`*`), enabled auto horizontal/vertical scrollbars, and added text truncation/wrapping to prevent any UI clipping when resizing or snapping window.
+- [x] **Phase 5: Final Packaging & CI/CD Release (v2.0.0)**
+

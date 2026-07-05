@@ -6,6 +6,7 @@ namespace WifiBandLockPro.App;
 
 using System;
 using System.Drawing;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -54,7 +55,7 @@ public partial class App : Application
             {
                 _notifyIcon?.ShowBalloonTip(
                     4000,
-                    _locService.IsVietnamese ? "HyperBand 5G - Đã chuyển băng tần!" : "HyperBand 5G - Switched Band!",
+                    _locService.IsVietnamese ? "HyperBoost 5G - Đã chuyển băng tần!" : "HyperBoost 5G - Switched Band!",
                     _locService.IsVietnamese 
                         ? $"Tự động chuyển từ 2.4 GHz sang 5 GHz (BSSID: {log.ToBssid}) trên Wi-Fi '{log.Ssid}'."
                         : $"Automatically switched from 2.4 GHz to 5 GHz BSSID ({log.ToBssid}) on network '{log.Ssid}'.",
@@ -102,16 +103,41 @@ public partial class App : Application
 
     private void InitializeSystemTray()
     {
+        Icon? appIcon = null;
+        try
+        {
+            string? exeLocation = Environment.ProcessPath;
+            if (!string.IsNullOrEmpty(exeLocation))
+            {
+                appIcon = Icon.ExtractAssociatedIcon(exeLocation);
+            }
+        }
+        catch { }
+
+        if (appIcon == null)
+        {
+            try
+            {
+                var uri = new Uri("pack://application:,,,/app.ico");
+                var streamInfo = GetResourceStream(uri);
+                if (streamInfo != null)
+                {
+                    appIcon = new Icon(streamInfo.Stream);
+                }
+            }
+            catch { }
+        }
+
         _notifyIcon = new NotifyIcon
         {
-            Text = "HyperBand 5G - Active",
-            Icon = SystemIcons.Shield,
+            Text = "HyperBoost 5G & PC Suite",
+            Icon = appIcon ?? SystemIcons.Shield,
             Visible = true
         };
 
         var contextMenu = new ContextMenuStrip();
         
-        var openItem = new ToolStripMenuItem("Open HyperBand 5G / Mở Giao Diện");
+        var openItem = new ToolStripMenuItem("Open HyperBoost 5G & PC Suite / Mở Giao Diện");
         openItem.Click += (s, args) => ShowMainWindow();
         contextMenu.Items.Add(openItem);
 
@@ -121,7 +147,7 @@ public partial class App : Application
             if (_viewModel != null)
             {
                 _viewModel.IsSmartSelectionEnabled = !_viewModel.IsSmartSelectionEnabled;
-                _notifyIcon.ShowBalloonTip(2000, "HyperBand 5G", $"Smart Lock: {(_viewModel.IsSmartSelectionEnabled ? "ENABLED / BẬT" : "DISABLED / TẮT")}", ToolTipIcon.Info);
+                _notifyIcon.ShowBalloonTip(2000, "HyperBoost 5G & PC Suite", $"Smart Lock: {(_viewModel.IsSmartSelectionEnabled ? "ENABLED / BẬT" : "DISABLED / TẮT")}", ToolTipIcon.Info);
             }
         };
         contextMenu.Items.Add(toggleItem);

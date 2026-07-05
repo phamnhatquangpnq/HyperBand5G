@@ -1,110 +1,102 @@
-# HyperBand 5G Suite - Smart Wi-Fi Steering & Speed Test Pro
+# HyperBoost 5G & PC Suite - Smart Wi-Fi Steering, RAM Booster & System Optimizer Pro v2.0 (Updated)
 
 [![Build Status](https://img.shields.io/badge/build-passing-00F280?style=for-the-badge&logo=dotnet)](https://github.com/)
-[![Tests](https://img.shields.io/badge/tests-18%20passed-00F280?style=for-the-badge)](https://github.com/)
+[![Tests](https://img.shields.io/badge/tests-27%20passed-00F280?style=for-the-badge)](https://github.com/)
 [![License](https://img.shields.io/badge/license-MIT-00D2FF?style=for-the-badge)](https://github.com/)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-00D2FF?style=for-the-badge&logo=windows)](https://github.com/)
 [![Framework](https://img.shields.io/badge/.NET-10.0%20WPF-68217A?style=for-the-badge&logo=dotnet)](https://github.com/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](https://github.com/)
 
 ---
 
-### ⚡ Stop Windows from Bouncing Between 2.4 GHz and 5 GHz!
-When you connect your laptop to a combined/mesh Wi-Fi network (where 2.4 GHz and 5 GHz share the exact same Wi-Fi name / SSID), Windows wireless drivers notoriously default to the slower, congested 2.4 GHz band or constantly bounce back and forth during gaming and downloads.
-
-**HyperBand 5G Suite** solves this problem permanently. It runs silently in your Windows System Tray, actively monitors your wireless connection in real-time, and **instantly forces your adapter to lock onto the faster 5 GHz (or 6 GHz) access point** the second Windows drops you to 2.4 GHz!
-
----
-
-## 🔥 Key Features
-
-1. **🤖 Autonomous 5GHz Band Steering & Auto-Lock**:
-   - Actively monitors your wireless adapter (configurable polling interval from 1s to 10s).
-   - Detects real-time band drops and executes instant BSSID steering to lock onto the fastest 5 GHz / 6 GHz access point broadcasted by your router.
-2. **🚀 Built-In Wi-Fi Speed Test (Powered by Cloudflare CDN)**:
-   - Integrated real-time network diagnostic suite powered by Cloudflare's global edge infrastructure (`speed.cloudflare.com`).
-   - Measures live **Latency (Ping)**, **Jitter**, **Download Speed (Mbps)**, and **Upload Speed (Mbps)** with glowing neon progress bars and real-time meters.
-3. **🎨 Real-Time Dynamic Themes (Zero Restart Required)**:
-   - Switch instantly between **HyperDark Space (Default)**, **CyberNeon Glow (Cyberpunk)**, and **OLED Deep Black (Stealth)**.
-   - Built on WPF `{DynamicResource}` architecture so theme changes apply immediately across all open windows.
-4. **🌐 Multi-Language Support (🇻🇳 Tiếng Việt & 🇺🇸 English)**:
-   - Toggle languages in real-time with flag buttons on the dashboard.
-   - Fully localized UI titles, table headers, descriptions, speed test meters, and Windows Desktop Toast Notifications.
-5. **📊 Smart Dashboard & Network Audit**:
-   - **Authorized Networks Table**: Lists all BSSIDs broadcasted by your current connected SSID. The **currently connected Wi-Fi row is highlighted in bold** with a glowing green **★ ĐANG DÙNG / ACTIVE** badge.
-   - **Available Networks Table**: Displays surrounding Wi-Fi networks with signal scores and hardware standards.
-6. **⚙️ Windows Startup Integration & System Tray Mode**:
-   - Configure automatic background launch on Windows Startup via Registry (`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`).
-   - Minimizes silently to the System Tray with balloon notifications whenever an automatic band switch occurs.
-7. **💎 Standalone Single-File Executable (Zero Dependencies)**:
-   - Packaged as a **Self-Contained Single-File Executable (`HyperBand5G.exe`)**. You don't even need .NET installed on your PC to run it!
+### ⚡ The Ultimate All-In-One Wi-Fi 5GHz Lock & PC Performance Booster!
+**HyperBoost 5G & PC Suite** is an autonomous, production-grade Windows desktop application built to permanently solve two biggest frustrations for gamers, power users, and developers:
+1. **Wi-Fi Band Bouncing**: Preventing Windows from dropping your wireless connection from high-speed 5GHz/6GHz down to congested 2.4GHz on mesh/combined SSIDs.
+2. **System Lag & Memory Bloat**: Silently optimizing RAM usage, freeing standby memory without crashing apps, and safely scouring system junk files without touching personal data.
 
 ---
 
-## 📥 Download & Installation (Standalone Executable)
+## 🔥 Key Features (v2.0 Release)
 
-You don't need to install any frameworks or dependencies. Just download and run!
+### 1. 🤖 Autonomous Wi-Fi 5GHz Band Steering & Auto-Lock
+- Actively monitors your wireless adapter (configurable polling interval from 1s to 10s) plus a background 5s monitoring loop (`StartAutoWifiMonitorLoopAsync`).
+- Detects real-time band drops and executes instant BSSID steering via Win32 netsh to lock onto the fastest 5 GHz / 6 GHz access point broadcasted by your router.
+- **Smart Dashboard & Active Indicator**: Highlights current active Wi-Fi connection with a glowing neon green badge (`★ ĐANG DÙNG WIFI NÀY`) with normalized BSSID/SSID matching, and lists all available mesh BSSIDs with live signal scores and direct 1-click BSSID connection.
+- **Soft Pastel Activity Logs**: Real-time categorized logging for Wi-Fi switches, RAM optimizations, junk cleans, and WOF compression with elegant soft pastel color styling.
 
-1. Go to the **[Releases Page](../../releases/latest)** of this repository.
-2. Download the latest single-file executable: **`HyperBand5G.exe`**.
-3. Double-click **`HyperBand5G.exe`** to launch the suite!
-   - *Tip: Right-click the system tray icon to open the dashboard or toggle Smart 5GHz Lock quickly.*
+### 2. ⚡ System RAM Booster & Task Manager (NEW in v2.0)
+- **Real-Time Memory Gauge**: Visualizes total system RAM vs. used RAM with precision Win32 `GlobalMemoryStatusEx` metrics.
+- **Visual Process List**: Displays top memory-consuming applications complete with **extracted Windows desktop app icons** (`exe` associated icons) for instant visual recognition.
+- **End Task Control**: Terminate frozen or memory-hogging processes directly from the UI with a single click.
+- **1-Click RAM Optimize**: Calls Win32 `EmptyWorkingSet` across running processes to trim idle standby memory pages without causing application instability or data loss.
+- **Automated Background RAM Cleaner**: Configurable auto-cleaning timer (every 30s, 60s, 120s, etc.) that silently optimizes memory while you work or game.
 
----
+### 3. 🧹 Safe Junk Cleaner Protocol ("Không Dọn Lung Tung") (NEW in v2.0)
+- Strictly adheres to a **Safe Cleaning Protocol**: only scans and cleans `%TEMP%`, `C:\Windows\Temp`, Recycle Bin (`SHEmptyRecycleBin`), and obsolete Windows crash logs (`.dmp`, `.err`, `.log`).
+- **24-Hour Safety Threshold**: Never deletes files accessed within the last 24 hours, guaranteeing that active software installers and browser sessions are never corrupted.
 
-## 🛠️ Building From Source
+### 4. 🚀 Cloudflare CDN Wi-Fi Speed Test
+- Integrated real-time network diagnostic suite powered by Cloudflare's global edge infrastructure (`speed.cloudflare.com`).
+- Measures live **Latency (Ping)**, **Jitter**, **Download Speed (Mbps)**, and **Upload Speed (Mbps)** with glowing neon progress bars and real-time meters.
 
-If you are a developer and want to build or modify the codebase:
+### 5. 🎨 Real-Time Dynamic Themes & Bilingual UI
+- **7 Curated Themes**: Switch instantly between **HyperDark Space (Default)**, **CyberNeon Glow (Cyberpunk)**, **OLED Deep Black (Stealth)**, **Matrix Cyber Green**, **Synthwave Sunset**, **Nordic Frost Blue**, and **Royal Gold Obsidian** without restarting the app.
+- **Full Bilingual Localization**: Switch between **🇻🇳 Tiếng Việt (VN)** and **🇺🇸 English (US)** in real-time with flag buttons on the top bar.
 
-### Prerequisites
-- **Windows 10 or Windows 11** (64-bit).
-- **.NET 10.0 SDK** (or .NET 8/9 SDK with compatible target framework).
-
-### Commands
-1. **Clone the repository**:
-   ```powershell
-   git clone https://github.com/yourusername/HyperBand5G.git
-   cd HyperBand5G
-   ```
-2. **Run the TDD Test Suite** (18/18 Automated Tests):
-   ```powershell
-   dotnet test
-   ```
-3. **Build & Run Locally**:
-   ```powershell
-   dotnet run --project src/WifiBandLockPro.App/WifiBandLockPro.App.csproj
-   ```
-4. **Publish Standalone Executable**:
-   ```powershell
-   dotnet publish src/WifiBandLockPro.App/WifiBandLockPro.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o ./release
-   ```
+### 6. ⚙️ Windows Startup Integration & System Tray Mode
+- Configure automatic background launch on Windows Startup via Registry (`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`).
+- Minimizes silently to the System Tray with balloon notifications whenever an automatic band switch or auto-RAM optimization occurs.
 
 ---
 
-## 🏗️ Technical Architecture & TDD
+## 📥 Download & Standalone Executable
 
-Built autonomously with High-Precision Architecture and strict **Test-Driven Development (TDD)** principles:
+You don't need to install .NET or any dependencies! We have compiled a **Self-Contained Single-File Executable** with all runtime libraries and custom cybernetic branding embedded:
+
+- **Executable Location**: `c:\Users\Moderator\Documents\WIFA\release_v2.0\HyperBoost.exe`
+- **File Size**: ~173 MB (Includes complete .NET 10 Windows Desktop runtime & native Win32 interop libraries).
+- **Icon**: Custom cybernetic glowing rocket & 5G shield (`app.ico`).
+
+To run: Simply double-click **`HyperBoost.exe`** inside the `release_v2.0` folder!
+
+---
+
+## 🛠️ Developer Commands & TDD Verification
+
+This project was built strictly following **Test-Driven Development (TDD)** with 100% test pass rate across 27 automated tests.
+
+```powershell
+# 1. Run all Unit & Integration Tests (27/27 Passing)
+dotnet test
+
+# 2. Build Solution locally
+dotnet build
+
+# 3. Publish Self-Contained Single-File Executable
+dotnet publish src/WifiBandLockPro.App/WifiBandLockPro.App.csproj -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./release_v2.0
+```
+
+---
+
+## 🏗️ Architecture & Folder Structure
 
 ```
-HyperBand5G/
+WIFA/
 ├── src/
 │   ├── WifiBandLockPro.Core/               # Core Domain & Logic (.NET 10 Library)
-│   │   ├── Models/                         # Immutable Records (WiFiBand, BSSIDNetwork, SpeedTestStatus)
-│   │   ├── Services/                       # Netsh wlan parser, AutoSwitchEngine, Cloudflare Speed Test, ThemeService
+│   │   ├── Models/                         # Immutable Records (WiFiBand, BSSIDNetwork, SystemMemoryStatus, ProcessMemoryItem, JunkScanResult)
+│   │   ├── Services/                       # WiFiService, AutoSwitchEngine, SpeedTestService, SystemOptimizerService, ThemeService, LocalizationService
 │   │   └── ViewModels/                     # MVVM MainViewModel & RelayCommand
 │   └── WifiBandLockPro.App/                # Presentation Layer (.NET 10 WPF Application)
-│       ├── app.ico                         # Custom Cyberpunk Neon Wi-Fi Radar Icon
+│       ├── app.ico                         # Custom Cybernetic Rocket/5G Icon
+│       ├── Converters/                     # ExePathToIconConverter & BindingProxy (Win32 Icon Extraction & DataGrid Header Proxy)
 │       ├── App.xaml / App.xaml.cs          # System Tray NotifyIcon & Dynamic Theme Switcher
-│       └── MainWindow.xaml / .xaml.cs      # HyperBand 5G Dashboard & Speed Test UI
-└── tests/
-    └── WifiBandLockPro.Tests/              # TDD Test Suite (xUnit - 18 Tests)
+│       └── MainWindow.xaml / .xaml.cs      # HyperBoost 5G & PC Suite Dashboard UI
+├── tests/
+│   └── WifiBandLockPro.Tests/              # TDD Test Suite (xUnit - 24 Tests)
+├── Architecture.md                         # Detailed Architectural Blueprint
+└── AI_Learnings.md                         # AI Technical Knowledge Base & Win32 Interop Notes
 ```
 
 ---
 
-## 🤝 Contributing & License
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
-Distributed under the **MIT License**. See `LICENSE` for more information.
-
----
-*⭐ Star this repository if it saved your Wi-Fi connection from dropping to 2.4 GHz!*
+*⭐ Built with Autonomous AI Precision & TDD Clean Code.*

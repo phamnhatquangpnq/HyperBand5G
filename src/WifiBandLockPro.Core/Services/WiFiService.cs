@@ -100,7 +100,8 @@ public class WiFiService : IWiFiService
             {
                 var band = GetBandFromChannel(channel);
                 int rssi = (signal / 2) - 100;
-                bool isCurrent = !string.IsNullOrEmpty(currentBssid) && string.Equals(bssid, currentBssid, StringComparison.OrdinalIgnoreCase);
+                bool isCurrent = !string.IsNullOrEmpty(currentBssid) && 
+                                 string.Equals(bssid?.Replace("-", ":").Trim(), currentBssid?.Replace("-", ":").Trim(), StringComparison.OrdinalIgnoreCase);
                 
                 // Score boost for 5GHz and Wi-Fi 6/5
                 int bandBoost = band == WiFiBand.Band5GHz ? 20 : (band == WiFiBand.Band6GHz ? 30 : 0);

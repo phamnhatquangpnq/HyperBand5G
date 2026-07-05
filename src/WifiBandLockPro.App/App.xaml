@@ -140,6 +140,27 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <!-- Segmented Wi-Fi Signal Gauge Bar Style (Multi-chunk LED bar effect) -->
+            <Style x:Key="SegmentedSignalBarStyle" TargetType="ProgressBar" BasedOn="{StaticResource KillerProgressBarStyle}">
+                <Setter Property="Foreground" Value="{DynamicResource KillerGreenBrush}"/>
+                <Setter Property="OpacityMask">
+                    <Setter.Value>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <UniformGrid Columns="6" Width="60" Height="12">
+                                    <Border Background="Black" Margin="0,0,2,0" CornerRadius="1"/>
+                                    <Border Background="Black" Margin="0,0,2,0" CornerRadius="1"/>
+                                    <Border Background="Black" Margin="0,0,2,0" CornerRadius="1"/>
+                                    <Border Background="Black" Margin="0,0,2,0" CornerRadius="1"/>
+                                    <Border Background="Black" Margin="0,0,2,0" CornerRadius="1"/>
+                                    <Border Background="Black" CornerRadius="1"/>
+                                </UniformGrid>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

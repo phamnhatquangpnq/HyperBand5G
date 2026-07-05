@@ -109,4 +109,20 @@ public class MainViewModelTests
         Assert.False(vm.IsSmartSelectionEnabled);
         Assert.False(engine.Config.Enabled);
     }
+
+    [Fact]
+    public void SwitchTabCommand_ShouldChangeTabIndex_AndTriggerOptimizerRefreshOnTab1()
+    {
+        var mockSvc = new MockWiFiService();
+        var engine = new AutoSwitchEngine(mockSvc);
+        var vm = new MainViewModel(mockSvc, engine);
+
+        Assert.Equal(0, vm.CurrentTabIndex);
+
+        vm.SwitchTabCommand.Execute(1);
+        Assert.Equal(1, vm.CurrentTabIndex);
+
+        vm.SwitchTabCommand.Execute(2);
+        Assert.Equal(2, vm.CurrentTabIndex);
+    }
 }

@@ -38,17 +38,34 @@ public class SpeedTestAndThemeTests
         var oled = ThemeService.GetThemeColors("OLEDBlack");
         Assert.Equal("#000000", oled.Background);
         Assert.Equal("#38BDF8", oled.Accent);
+
+        // New Themes for v2.1
+        var matrix = ThemeService.GetThemeColors("MatrixEmerald");
+        Assert.Equal("#05130E", matrix.Background);
+        Assert.Equal("#00FF66", matrix.Accent);
+
+        var sunset = ThemeService.GetThemeColors("SunsetPulse");
+        Assert.Equal("#11081A", sunset.Background);
+        Assert.Equal("#FF5E36", sunset.Accent);
+
+        var nordic = ThemeService.GetThemeColors("NordicFrost");
+        Assert.Equal("#0F172A", nordic.Background);
+        Assert.Equal("#38BDF8", nordic.Accent);
+
+        var gold = ThemeService.GetThemeColors("GoldPrestige");
+        Assert.Equal("#0A0A0C", gold.Background);
+        Assert.Equal("#F59E0B", gold.Accent);
     }
 
     [Fact]
     public void LocalizationService_ShouldUseNewRebrandedName()
     {
         var locVn = new LocalizationService("vn");
-        Assert.Contains("HYPERBAND 5G", locVn.AppSubtitle, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("HYPERBOOST 5G", locVn.AppTitle, StringComparison.OrdinalIgnoreCase);
         Assert.Equal("🚀 ĐO TỐC ĐỘ WI-FI", locVn.SpeedTestTabTitle);
 
         var locEn = new LocalizationService("en");
-        Assert.Contains("HYPERBAND 5G", locEn.AppSubtitle, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("HYPERBOOST 5G", locEn.AppTitle, StringComparison.OrdinalIgnoreCase);
         Assert.Equal("🚀 WI-FI SPEED TEST", locEn.SpeedTestTabTitle);
     }
 }
