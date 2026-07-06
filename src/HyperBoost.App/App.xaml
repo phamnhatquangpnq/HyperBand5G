@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application x:Class="HyperBoost.App.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:HyperBoost.App.Converters" xmlns:app="clr-namespace:HyperBoost.App">
+  <Application.Resources>
+    <ResourceDictionary>
+      <converters:BoolToToggleTextConverter x:Key="BoolToToggleTextConverter" />
+      <converters:BoolToToggleColorConverter x:Key="BoolToToggleColorConverter" />
+      <converters:BoolToVisConverter x:Key="BoolToVisConverter" />
+      <converters:InverseBoolToVisConverter x:Key="InverseBoolToVisConverter" />
+      <converters:TabIndexToVisConverter x:Key="TabIndexToVisConverter" />
+      <SolidColorBrush x:Key="KillerDarkBrush" Color="#0A0D14" />
+      <SolidColorBrush x:Key="KillerPanelBrush" Color="#121722" />
+      <SolidColorBrush x:Key="KillerBorderBrush" Color="#1F293D" />
+      <SolidColorBrush x:Key="KillerAccentBrush" Color="#00D2FF" />
+      <SolidColorBrush x:Key="KillerGreenBrush" Color="#00F280" />
+      <SolidColorBrush x:Key="KillerTextBrush" Color="#E2E8F0" />
+      <SolidColorBrush x:Key="KillerMutedBrush" Color="#64748B" />
+      <Style x:Key="KillerButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{DynamicResource KillerAccentBrush}" />
+        <Setter Property="Foreground" Value="#0A0D14" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FrameworkElement.Cursor" Value="Hand" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Border Name="border" Background="{TemplateBinding Control.Background}" CornerRadius="4" Padding="{TemplateBinding Control.Padding}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter TargetName="border" Property="UIElement.Opacity" Value="0.9" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                  <Setter TargetName="border" Property="UIElement.Opacity" Value="0.7" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter TargetName="border" Property="UIElement.Opacity" Value="0.35" />
+                  <Setter Property="FrameworkElement.Cursor" Value="Arrow" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="KillerSmallButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource KillerButtonStyle}">
+        <Setter Property="Background" Value="#1A2333" />
+        <Setter Property="Foreground" Value="{DynamicResource KillerTextBrush}" />
+      </Style>
+      <Style x:Key="KillerToggleButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource KillerButtonStyle}">
+        <Setter Property="Foreground" Value="#0A0D14" />
+        <Setter Property="FontWeight" Value="ExtraBold" />
+      </Style>
+      <Style x:Key="KillerDataGridStyle" TargetType="{x:Type DataGrid}">
+        <Setter Property="Background" Value="#00FFFFFF" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource KillerTextBrush}" />
+        <Setter Property="DataGrid.RowBackground" Value="#00FFFFFF" />
+        <Setter Property="DataGrid.AlternatingRowBackground" Value="#0D121C" />
+        <Setter Property="DataGrid.GridLinesVisibility" Value="Horizontal" />
+        <Setter Property="DataGrid.HorizontalGridLinesBrush" Value="{DynamicResource KillerBorderBrush}" />
+        <Setter Property="DataGrid.HeadersVisibility" Value="Column" />
+        <Setter Property="DataGrid.ColumnHeaderStyle">
+          <Setter.Value>
+            <Style TargetType="{x:Type DataGridColumnHeader}">
+              <Setter Property="Background" Value="#00FFFFFF" />
+              <Setter Property="Foreground" Value="{DynamicResource KillerMutedBrush}" />
+              <Setter Property="FontWeight" Value="SemiBold" />
+              <Setter Property="Padding" Value="10,8" />
+              <Setter Property="BorderThickness" Value="0,0,0,1" />
+              <Setter Property="BorderBrush" Value="{DynamicResource KillerBorderBrush}" />
+            </Style>
+          </Setter.Value>
+        </Setter>
+        <Setter Property="DataGrid.RowStyle">
+          <Setter.Value>
+            <Style TargetType="{x:Type DataGridRow}">
+              <Setter Property="Padding" Value="0,6" />
+              <Setter Property="Background" Value="#00FFFFFF" />
+              <Setter Property="Foreground" Value="{DynamicResource KillerTextBrush}" />
+              <Style.Triggers>
+                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="#1A2333" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </Setter.Value>
+        </Setter>
+        <Setter Property="DataGrid.CellStyle">
+          <Setter.Value>
+            <Style TargetType="{x:Type DataGridCell}">
+              <Setter Property="Padding" Value="10,8" />
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border Padding="{TemplateBinding Control.Padding}" Background="{TemplateBinding Control.Background}">
+                      <ContentPresenter VerticalAlignment="Center" />
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+              <Style.Triggers>
+                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                  <Setter Property="Background" Value="#00FFFFFF" />
+                  <Setter Property="Foreground" Value="{DynamicResource KillerTextBrush}" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="KillerProgressBarStyle" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Background" Value="#1A2333" />
+        <Setter Property="Foreground" Value="{DynamicResource KillerAccentBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ProgressBar}">
+              <Grid>
+                <Border Background="{TemplateBinding Control.Background}" CornerRadius="3" />
+                <Border Name="PART_Track" CornerRadius="3">
+                  <Border Name="PART_Indicator" Background="{TemplateBinding Control.Foreground}" CornerRadius="3" HorizontalAlignment="Left" />
+                </Border>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style x:Key="SegmentedSignalBarStyle" TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource KillerProgressBarStyle}">
+        <Setter Property="Foreground" Value="{DynamicResource KillerGreenBrush}" />
+        <Setter Property="UIElement.OpacityMask">
+          <Setter.Value>
+            <VisualBrush>
+              <VisualBrush.Visual>
+                <UniformGrid Columns="6" Width="60" Height="12">
+                  <Border Background="#FF000000" Margin="0,0,2,0" CornerRadius="1" />
+                  <Border Background="#FF000000" Margin="0,0,2,0" CornerRadius="1" />
+                  <Border Background="#FF000000" Margin="0,0,2,0" CornerRadius="1" />
+                  <Border Background="#FF000000" Margin="0,0,2,0" CornerRadius="1" />
+                  <Border Background="#FF000000" Margin="0,0,2,0" CornerRadius="1" />
+                  <Border Background="#FF000000" CornerRadius="1" />
+                </UniformGrid>
+              </VisualBrush.Visual>
+            </VisualBrush>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

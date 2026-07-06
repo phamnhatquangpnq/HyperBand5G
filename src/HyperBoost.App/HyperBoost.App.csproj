@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    
+    <!-- Packaging & Branding for Standalone Release -->
+    <AssemblyName>HyperBoost</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Product>HyperBoost 5G &amp; PC Suite</Product>
+    <Description>Autonomous Wi-Fi 5GHz Band Steering, RAM Booster &amp; PC Optimizer Suite for Windows</Description>
+    <Company>HyperBoost Team</Company>
+    <Copyright>Copyright © 2026 HyperBoost Team. All rights reserved.</Copyright>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HyperBoost.Core\HyperBoost.Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+</Project>

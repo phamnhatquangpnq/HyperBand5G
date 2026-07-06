@@ -30,19 +30,26 @@
 - **1-Click RAM Optimize**: Calls Win32 `EmptyWorkingSet` across running processes to trim idle standby memory pages without causing application instability or data loss.
 - **Automated Background RAM Cleaner**: Configurable auto-cleaning timer (every 30s, 60s, 120s, etc.) that silently optimizes memory while you work or game.
 
-### 3. 🧹 Safe Junk Cleaner Protocol ("Không Dọn Lung Tung") (NEW in v2.0)
+### 3. 🧹 Safe Junk Cleaner Protocol ("Không Dọn Lung Tung")
 - Strictly adheres to a **Safe Cleaning Protocol**: only scans and cleans `%TEMP%`, `C:\Windows\Temp`, Recycle Bin (`SHEmptyRecycleBin`), and obsolete Windows crash logs (`.dmp`, `.err`, `.log`).
 - **24-Hour Safety Threshold**: Never deletes files accessed within the last 24 hours, guaranteeing that active software installers and browser sessions are never corrupted.
 
-### 4. 🚀 Cloudflare CDN Wi-Fi Speed Test
+### 4. 🗑️ Software Uninstaller & App Manager (NEW)
+- View all installed Windows software applications with extracted executable icons, display names, versions, publishers, install dates, and calculated disk usage sizes (KB/MB/GB).
+- Sort applications by Size, Name, or Install Date.
+- Right-click context menu options: **Gỡ cài đặt** (Uninstall via native uninstaller string), **Mở thư mục cài đặt** (Open installation folder in Windows Explorer), and **Thông tin chi tiết**.
+- Anti-spam UI protection: buttons and actions automatically dim or disable during execution to prevent multiple simultaneous clicks.
+
+### 5. 🚀 Cloudflare CDN Wi-Fi Speed Test
 - Integrated real-time network diagnostic suite powered by Cloudflare's global edge infrastructure (`speed.cloudflare.com`).
 - Measures live **Latency (Ping)**, **Jitter**, **Download Speed (Mbps)**, and **Upload Speed (Mbps)** with glowing neon progress bars and real-time meters.
 
-### 5. 🎨 Real-Time Dynamic Themes & Bilingual UI
+### 6. 🎨 Real-Time Dynamic Themes & Bilingual UI
 - **7 Curated Themes**: Switch instantly between **HyperDark Space (Default)**, **CyberNeon Glow (Cyberpunk)**, **OLED Deep Black (Stealth)**, **Matrix Cyber Green**, **Synthwave Sunset**, **Nordic Frost Blue**, and **Royal Gold Obsidian** without restarting the app.
 - **Full Bilingual Localization**: Switch between **🇻🇳 Tiếng Việt (VN)** and **🇺🇸 English (US)** in real-time with flag buttons on the top bar.
+- **Log Filtering**: Filter real-time activity logs by All, Wi-Fi, RAM Booster, Junk Cleaner, or Uninstaller.
 
-### 6. ⚙️ Windows Startup Integration & System Tray Mode
+### 7. ⚙️ Windows Startup Integration & System Tray Mode
 - Configure automatic background launch on Windows Startup via Registry (`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`).
 - Minimizes silently to the System Tray with balloon notifications whenever an automatic band switch or auto-RAM optimization occurs.
 
@@ -52,11 +59,11 @@
 
 You don't need to install .NET or any dependencies! We have compiled a **Self-Contained Single-File Executable** with all runtime libraries and custom cybernetic branding embedded:
 
-- **Executable Location**: `c:\Users\Moderator\Documents\WIFA\release_v2.0\HyperBoost.exe`
+- **Executable Location**: `c:\Users\Moderator\Documents\WIFA\release_v2.2\HyperBoost.exe`
 - **File Size**: ~173 MB (Includes complete .NET 10 Windows Desktop runtime & native Win32 interop libraries).
 - **Icon**: Custom cybernetic glowing rocket & 5G shield (`app.ico`).
 
-To run: Simply double-click **`HyperBoost.exe`** inside the `release_v2.0` folder!
+To run: Simply double-click **`HyperBoost.exe`** inside the `release_v2.2` folder!
 
 ---
 
@@ -72,7 +79,7 @@ dotnet test
 dotnet build
 
 # 3. Publish Self-Contained Single-File Executable
-dotnet publish src/WifiBandLockPro.App/WifiBandLockPro.App.csproj -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./release_v2.0
+dotnet publish src/HyperBoost.App/HyperBoost.App.csproj -c Release -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true -o ./release_v2.0
 ```
 
 ---
@@ -82,17 +89,17 @@ dotnet publish src/WifiBandLockPro.App/WifiBandLockPro.App.csproj -c Release -r 
 ```
 WIFA/
 ├── src/
-│   ├── WifiBandLockPro.Core/               # Core Domain & Logic (.NET 10 Library)
+│   ├── HyperBoost.Core/               # Core Domain & Logic (.NET 10 Library)
 │   │   ├── Models/                         # Immutable Records (WiFiBand, BSSIDNetwork, SystemMemoryStatus, ProcessMemoryItem, JunkScanResult)
 │   │   ├── Services/                       # WiFiService, AutoSwitchEngine, SpeedTestService, SystemOptimizerService, ThemeService, LocalizationService
 │   │   └── ViewModels/                     # MVVM MainViewModel & RelayCommand
-│   └── WifiBandLockPro.App/                # Presentation Layer (.NET 10 WPF Application)
+│   └── HyperBoost.App/                # Presentation Layer (.NET 10 WPF Application)
 │       ├── app.ico                         # Custom Cybernetic Rocket/5G Icon
 │       ├── Converters/                     # ExePathToIconConverter & BindingProxy (Win32 Icon Extraction & DataGrid Header Proxy)
 │       ├── App.xaml / App.xaml.cs          # System Tray NotifyIcon & Dynamic Theme Switcher
 │       └── MainWindow.xaml / .xaml.cs      # HyperBoost 5G & PC Suite Dashboard UI
 ├── tests/
-│   └── WifiBandLockPro.Tests/              # TDD Test Suite (xUnit - 24 Tests)
+│   └── HyperBoost.Tests/              # TDD Test Suite (xUnit - 24 Tests)
 ├── Architecture.md                         # Detailed Architectural Blueprint
 └── AI_Learnings.md                         # AI Technical Knowledge Base & Win32 Interop Notes
 ```

@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HyperBoost.App/HyperBoost.App.csproj" />
+    <Project Path="src/HyperBoost.Core/HyperBoost.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HyperBoost.Tests/HyperBoost.Tests.csproj" />
+  </Folder>
+</Solution>

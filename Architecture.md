@@ -31,12 +31,13 @@ WIFA/
 │   └── workflows/
 │       └── release.yml                 # Automated CI/CD build & GitHub release
 ├── src/
-│   ├── WifiBandLockPro.Core/           # Core Domain, Models, and Services (No UI dependencies)
+│   ├── HyperBoost.Core/           # Core Domain, Models, and Services (No UI dependencies)
 │   │   ├── Models/
 │   │   │   ├── WiFiInterfaceStatus.cs  # Network interface states
 │   │   │   ├── BSSIDNetwork.cs         # Scanned AP properties & score
 │   │   │   ├── AppSettings.cs          # User settings & auto-clean preferences
 │   │   │   ├── ProcessMemoryItem.cs    # [NEW] Process info, RAM MB, and extracted Icon
+│   │   │   ├── InstalledAppItem.cs     # [NEW] Installed software info, disk usage size, and icon
 │   │   │   ├── SystemMemoryStatus.cs   # [NEW] Total, Used, Free RAM gauge
 │   │   │   └── JunkScanResult.cs       # [NEW] Safe junk file counts and sizes
 │   │   ├── Services/
@@ -44,26 +45,27 @@ WIFA/
 │   │   │   ├── AutoSwitchEngine.cs
 │   │   │   ├── ISpeedTestService.cs / SpeedTestService.cs
 │   │   │   ├── ISettingsService.cs / SettingsService.cs
-│   │   │   ├── LocalizationService.cs  # [UPDATED] Bilingual strings for RAM & Junk Cleaner
-│   │   │   └── ISystemOptimizerService.cs / SystemOptimizerService.cs # [NEW] RAM & Junk Engine
+│   │   │   ├── LocalizationService.cs  # [UPDATED] Bilingual strings for RAM, Junk Cleaner & Uninstaller
+│   │   │   ├── ISystemOptimizerService.cs / SystemOptimizerService.cs # RAM & Junk Engine
+│   │   │   └── ISoftwareUninstallerService.cs / SoftwareUninstallerService.cs # [NEW] Uninstaller & App Manager
 │   │   └── ViewModels/
 │   │       ├── ViewModelBase.cs
 │   │       ├── RelayCommand.cs
-│   │       └── MainViewModel.cs        # [UPDATED] Coordinates Wi-Fi, SpeedTest, and Optimizer tabs
-│   └── WifiBandLockPro.App/            # WPF UI Layer
+│   │       └── MainViewModel.cs        # [UPDATED] Coordinates Wi-Fi, SpeedTest, Optimizer, and Uninstaller tabs
+│   └── HyperBoost.App/            # WPF UI Layer
 │       ├── Resources/
-│       │   ├── app.ico                 # [NEW] Custom HyperBoost Cybernetic Icon
+│       │   ├── app.ico                 # Custom HyperBoost Cybernetic Icon
 │       │   └── Themes/                 # ResourceDictionaries (HyperDark, CyberNeon, OLEDBlack)
 │       ├── Converters/                 # WPF Value Converters (IconToImageSource, etc.)
 │       ├── App.xaml / App.xaml.cs      # System Tray & Startup logic
-│       └── MainWindow.xaml             # [UPDATED] 3-Tab Layout (Dashboard + SpeedTest side-by-side, Optimizer, Settings)
+│       └── MainWindow.xaml             # [UPDATED] 4-Tab Layout with Log Filtering and Uninstaller DataGrid
 ├── tests/
-│   └── WifiBandLockPro.Tests/          # Automated TDD Test Suite (xUnit)
+│   └── HyperBoost.Tests/          # Automated TDD Test Suite (xUnit)
 │       ├── BSSIDNetworkTests.cs
 │       ├── AutoSwitchEngineTests.cs
 │       ├── PackagingAndGitHubTests.cs
-│       └── SystemOptimizerTests.cs     # [NEW] TDD tests for RAM cleaner, Process list, and Safe junk scan
-├── release_v2.0/                       # Final self-contained single-file portable executable
+│       └── SystemOptimizerTests.cs     # TDD tests for RAM cleaner, Process list, and Safe junk scan
+├── release_v2.2/                       # Final self-contained single-file portable executable
 ├── Architecture.md                     # This document
 ├── AI_Learnings.md                     # Knowledge base and technical discoveries
 ├── README.md                           # Viral open-source promotional documentation

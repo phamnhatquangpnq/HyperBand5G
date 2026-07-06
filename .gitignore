@@ -6,7 +6,11 @@ obj/
 .vs/
 *.userosscache
 *.sln.docstates
-release/
+release*/
+release_*
+*.exe
+*.pdb
+*.dll
 publish_output/
 scratch/
 test_settings_*.json

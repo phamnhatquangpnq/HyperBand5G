@@ -1,4 +1,4 @@
-name: Build & Release HyperBand 5G Suite
+name: Build & Release HyperBoost Suite
 
 on:
   push:
@@ -28,14 +28,14 @@ jobs:
     - name: Publish Single-File Self-Contained Executable
       if: startsWith(github.ref, 'refs/tags/v')
       run: |
-        dotnet publish src/WifiBandLockPro.App/WifiBandLockPro.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o ./publish_output
+        dotnet publish src/HyperBoost.App/HyperBoost.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o ./publish_output
 
     - name: Create GitHub Release & Upload Asset
       if: startsWith(github.ref, 'refs/tags/v')
       uses: softprops/action-gh-release@v2
       with:
-        files: ./publish_output/HyperBand5G.exe
-        name: HyperBand 5G Suite Release ${{ github.ref_name }}
+        files: ./publish_output/HyperBoost.exe
+        name: HyperBoost Suite Release ${{ github.ref_name }}
         draft: false
         prerelease: false
       env:
